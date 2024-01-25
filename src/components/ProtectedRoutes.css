@@ -1,0 +1,39 @@
+.Cargando1 {
+    margin-top: 200px;
+    text-align: center;
+    font-size: 50px;
+    width: '100%';
+    padding: '16px 0px';
+    margin: '25px';
+    border: 'none';
+    border-radius: '8px';
+    outline: 'none';
+    text-transform: 'uppercase';
+    font-weight: 800;
+    letter-spacing: '3px';
+    color: 'red';
+    background: '#0f8';
+    cursor: 'pointer';
+    box-shadow: '0px 10px 40px -12px #00ff8052'
+}
+
+@keyframes dotAnimation {
+    0%, 20% {
+      content: '.';
+    }
+    40%, 60% {
+      content: '..';
+    }
+    80%, 100% {
+      content: '...';
+    }
+  }
+  
+  .DotAnimation::after {
+    content: '...';
+    animation: dotAnimation 1.5s infinite;
+    display: inline-block;
+    width: 1em;
+    text-align: left;
+  }
+  
