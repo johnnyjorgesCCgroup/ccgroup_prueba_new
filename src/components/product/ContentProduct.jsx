@@ -421,7 +421,7 @@ try {
 
 const handleStatus = async (id)  => {
   try {  
-    const response = await fetch(`http://161.132.40.129/api/product/statusUpdate/${id}`);
+    const response = await fetch(`http://api.cvimport.com/api/product/statusUpdate/${id}`);
     const valor = await response.json();
     setNewProduct((prevProduct) => ({
       ...prevProduct,

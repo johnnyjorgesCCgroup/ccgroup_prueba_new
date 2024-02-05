@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
+import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import {
   Container,
   Grid,
@@ -59,6 +61,10 @@ const ContentEntry = () => {
     sku: '',
     price : ''
   }); 
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+
 
   useEffect(() => {
     
@@ -197,9 +203,9 @@ const ContentEntry = () => {
   
   };
 
-  const eliminarProducto = (id) => {
+  const eliminarProducto = (sku) => {
     // Eliminar un producto del estado de productos
-    const nuevosProductos = productos.filter((prod) => prod.id !== id);
+    const nuevosProductos = productos.filter((prod) => prod.sku !== sku);
     setProductos(nuevosProductos);
   };
 
@@ -313,6 +319,16 @@ const ContentEntry = () => {
   }
 
   
+  const editarProducto = (sku) => {
+    const productToEdit = productos.find((prod) => prod.sku === sku);
+    console.log("Aquiii:", productToEdit , sku)
+    setEditingProduct(productToEdit);
+    setIsModalOpen(true);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
   return (
     <Container >
       <Grid container marginLeft={10}  spacing={2} alignItems="center">
@@ -433,7 +449,6 @@ const ContentEntry = () => {
                     <TableCell>Producto</TableCell>
                     <TableCell>Precio</TableCell>
                     <TableCell>Cantidad</TableCell>
-                    <TableCell>Subtotal</TableCell>
                     <TableCell>Acciones</TableCell>
                   </TableRow>
                 </TableHead>
@@ -444,15 +459,21 @@ const ContentEntry = () => {
                       <TableCell>{prod.name}</TableCell>
                       <TableCell>{prod.price}</TableCell>
                       <TableCell>{prod.quantity}</TableCell>
-                      <TableCell>{prod.subtotal.toFixed(2)}</TableCell>
                       <TableCell>
-                        <Button onClick={() => eliminarProducto(prod.id)}>Eliminar</Button>
-                      </TableCell>
+                             <Button onClick={() => editarProducto(prod.sku)}
+                              startIcon={<FontAwesomeIcon icon={faEdit} />}
+                            ></Button>
+                            <Button onClick={() => eliminarProducto(prod.sku)}
+                            startIcon={<FontAwesomeIcon icon={faTrash} />}
+                            ></Button>                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
+            <Modal open={isModalOpen} onClose={handleModalClose}>
+                  {modalContent}
+            </Modal>
             <div style={style.buttonContainer}>
             <Typography variant="h6" gutterBottom>
               Total: {nuevoTotal.toFixed(2)}

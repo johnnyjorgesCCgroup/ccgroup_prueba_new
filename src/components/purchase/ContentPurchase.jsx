@@ -1,4 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
+import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
+
 import {
   Container,
   Grid,
@@ -50,9 +57,8 @@ const ContentPurchase = () => {
     price : ''
   }); 
 
-
-
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   useEffect(() => {
     
@@ -171,9 +177,10 @@ const ContentPurchase = () => {
   
   };
 
-  const eliminarProducto = (id) => {
+  const eliminarProducto = (sku) => {
     // Eliminar un producto del estado de productos
-    const nuevosProductos = productos.filter((prod) => prod.id !== id);
+    console.log(sku);
+    const nuevosProductos = productos.filter((prod) => prod.sku !== sku);
     setProductos(nuevosProductos);
   };
 
@@ -251,6 +258,74 @@ const ContentPurchase = () => {
           setDate([day, month, year].join('/'));
 
   }
+
+  const editarProducto = (sku) => {
+    const productToEdit = productos.find((prod) => prod.sku === sku);
+    console.log("Aquiii:", productToEdit , sku)
+    setEditingProduct(productToEdit);
+    setIsModalOpen(true);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+  
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  };
+
+  const modalContent = (
+    <Box
+      sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+      }}
+    >
+      <Typography variant="h6" gutterBottom>
+        Editar Cantidad
+      </Typography>
+      {/* Contenido del modal, por ejemplo, un campo de entrada para la nueva cantidad */}
+      <TextField
+        fullWidth
+        label="Nueva Cantidad"
+        type="number"
+        name="newQuantity"
+        value={editingProduct ? editingProduct.quantity : ''}
+        onChange={(event) => handleEditInputChange(event)}
+        margin="normal"
+      />
+      <Button variant="contained" onClick={() => guardarEdicionCantidad()}>
+        Guardar
+      </Button>
+      <Button variant="contained" onClick={handleModalClose}>
+        Cancelar
+      </Button>
+    </Box>
+  );
+
+  const handleEditInputChange = (event) => {
+    const { value } = event.target;
+    setEditingProduct((prevProduct) => ({
+      ...prevProduct,
+      quantity: value,
+    }));
+  };
+
+  const guardarEdicionCantidad = () => {
+    // Implementar lógica para guardar la edición de cantidad
+    // Puedes actualizar el estado y cerrar el modal
+    const updatedProducts = productos.map((prod) =>
+      prod.sku === editingProduct.sku ? { ...prod, quantity: editingProduct.quantity } : prod
+    );
+    setProductos(updatedProducts);
+    handleModalClose();
+  };
 
   
   return (
@@ -333,7 +408,6 @@ const ContentPurchase = () => {
                     <TableCell>Producto</TableCell>
                     <TableCell>Precio</TableCell>
                     <TableCell>Cantidad</TableCell>
-                    <TableCell>Subtotal</TableCell>
                     <TableCell>Acciones</TableCell>
                   </TableRow>
                 </TableHead>
@@ -344,15 +418,23 @@ const ContentPurchase = () => {
                       <TableCell>{prod.name}</TableCell>
                       <TableCell>{prod.price}</TableCell>
                       <TableCell>{prod.quantity}</TableCell>
-                      <TableCell>{prod.subtotal.toFixed(2)}</TableCell>
                       <TableCell>
-                        <Button onClick={() => eliminarProducto(prod.id)}>Eliminar</Button>
+                      <Button onClick={() => editarProducto(prod.sku)}
+                              startIcon={<FontAwesomeIcon icon={faEdit} />}
+                            ></Button>
+                            <Button onClick={() => eliminarProducto(prod.sku)}
+                            startIcon={<FontAwesomeIcon icon={faTrash} />}
+                            ></Button>
+
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
+            <Modal open={isModalOpen} onClose={handleModalClose}>
+                  {modalContent}
+                </Modal>
             <div style={style.buttonContainer}>
             <Typography variant="h6" gutterBottom>
               Total: {nuevoTotal.toFixed(2)}

@@ -506,7 +506,7 @@ const columns = [
     {
       field: 'nameProduct',
       headerName: 'Nombre',
-      width: 350,
+      width: 305,
     },
     {
       field: 'skuProduct',
@@ -530,7 +530,7 @@ const columns = [
     {
       field: 'document_number',
       headerName: 'Documento  ',
-  
+      width: 155,
     },
     {
       field: 'status',
