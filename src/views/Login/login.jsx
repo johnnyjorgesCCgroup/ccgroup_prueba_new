@@ -9,7 +9,6 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-
  
   const handleLogin = async () => {
     try {
@@ -41,7 +40,6 @@ const Login = () => {
         // Si la autenticación es exitosa, realiza el login
 
         login();
-
         // Almacena el token en localStorage
         localStorage.setItem('token', loginData.access_token);
 

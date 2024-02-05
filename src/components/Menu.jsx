@@ -138,6 +138,154 @@ const Menu = () => {
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-solid fa-chart-simple" />
                 <p>
+                  Proveedores
+                  <i className="fas fa-angle-left right" />
+                </p>
+              </a>
+              <ul
+                className="nav nav-treeview nav-pills nav-sidebar flex-column"
+                ref={treeviewRef} // Asigna el ref al elemento que deseas seleccionar
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false"
+              >
+                <li className="nav-item">
+                  <Link to="/provider" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Proveedor</p>
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+
+            <li className="nav-item">
+              <a href="#" className="nav-link">
+                <i className="nav-icon fas fa-solid  fa-cart-plus" />
+                <p>
+                  Ordenes de Compra
+                  <i className="fas fa-angle-left right" />
+                </p>
+              </a>
+              <ul
+                className="nav nav-treeview nav-pills nav-sidebar flex-column"
+                ref={treeviewRef} // Asigna el ref al elemento que deseas seleccionar
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false"
+              >
+                <li className="nav-item">
+                  <Link to="/purchase" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Ordenes</p>
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link to="/purchaseList" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Listado Ordenes</p>
+                  </Link>
+                </li>
+
+              </ul>
+            </li>
+
+            <li className="nav-item">
+              <a href="#" className="nav-link">
+                <i className="nav-icon fas fa-solid fa-boxes-packing" />
+                <p>
+                  Logistica
+                  <i className="fas fa-angle-left right" />
+                </p>
+              </a>
+              <ul
+                className="nav nav-treeview nav-pills nav-sidebar flex-column"
+                ref={treeviewRef} // Asigna el ref al elemento que deseas seleccionar
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false"
+              >
+                <li className="nav-item">
+                  <Link to="/category" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Stock</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/entry" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Entradas</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/output" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Salidas</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Kardex</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/move" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Movimientos</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/warehouse" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Almacenes</p>
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+            
+            <li className="nav-item">
+              <a href="#" className="nav-link">
+                <i className="nav-icon fas fa-solid  fa-bookmark" />
+                <p>
+                  Registros
+                  <i className="fas fa-angle-left right" />
+                </p>
+              </a>
+              <ul
+                className="nav nav-treeview nav-pills nav-sidebar flex-column"
+                ref={treeviewRef} // Asigna el ref al elemento que deseas seleccionar
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false"
+              >
+                <li className="nav-item">
+                  <Link to="/client" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Market Place</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/operator" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Operadores</p>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/operator" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Almacenes</p>
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+            <li className="nav-item">
+              <a href="#" className="nav-link">
+                <i className="nav-icon fas fa-solid  fa-users" />
+                <p>
                   Usuarios
                   <i className="fas fa-angle-left right" />
                 </p>

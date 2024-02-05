@@ -139,7 +139,7 @@ const ContentCategory = () => {
   const handleCreateCategory = async () => {
     try {
       setEditingMode(false);
-        const response = await fetch('`https://api.cvimport.com/api/category', {
+        const response = await fetch('https://api.cvimport.com/api/category', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

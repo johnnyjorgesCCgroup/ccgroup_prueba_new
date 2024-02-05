@@ -36,7 +36,7 @@ const ContentSubCategory = () => {
 
   const fetchDataSelect = async () => {
     try {
-    const response_category = await fetch('http://161.132.40.129/api/category');
+    const response_category = await fetch('https://api.cvimport.com/api/category');
     if (!response_category.ok) {
       throw new Error(`HTTP error! Status: ${response_category.status}`);
     }

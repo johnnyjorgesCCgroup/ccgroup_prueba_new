@@ -7,6 +7,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
   const [isLoggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -14,21 +15,29 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setLoggedIn(true);
+      const storedUsername = localStorage.getItem('username');
+      setUser({ username: storedUsername });
     }
   }, []);
 
   const login = () => {
     setLoggedIn(true);
+    setUser({ username });
+    localStorage.setItem('username', username.value);
+   
+
   };
 
   const logout = () => {
     // Eliminar el token de localStorage al cerrar sesión
     localStorage.removeItem('token');
     setLoggedIn(false);
+    localStorage.removeItem('username');
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user , isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

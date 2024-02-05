@@ -5,6 +5,16 @@ import IndexCategory from '../views/Category/index';
 import IndexSubCategory from '../views/SubCategory/index';
 import IndexProduct from '../views/Product/index';
 import IndexUser from '../views/User/index';
+import IndexProvider from '../views/Provider/index';
+import IndexPurchase from '../views/Purchase/index';
+import IndexClient from '../views/Client/index';
+import IndexOperator from '../views/Operator/index';
+import IndexPurchaseList from '../views/PurchaseList/index';
+import IndexOutput from '../views/Output/index';
+import IndexEntry from '../views/Entry/index';
+import IndexWarehouse from '../views/Warehouse/index';
+import IndexMove from '../views/Move/index';
+
 import './ProtectedRoutes.css'
 
 const ProtectedRoutes = () => {
@@ -36,6 +46,15 @@ const ProtectedRoutes = () => {
       <Route path="/category" element={<IndexCategory />} />
       <Route path="/subcategory" element={<IndexSubCategory />} />
       <Route path="/user" element={<IndexUser />} />
+       <Route path="/purchase" element={<IndexPurchase />} /> 
+       <Route path="/purchaseList" element={<IndexPurchaseList />} /> 
+      <Route path="/provider" element={<IndexProvider />} />
+      <Route path="/client" element={<IndexClient />} />
+      <Route path="/operator" element={<IndexOperator />} />
+      <Route path="/entry" element={<IndexEntry />} />
+      <Route path="/output" element={<IndexOutput />} />
+      <Route path="/warehouse" element={<IndexWarehouse />} />
+      <Route path="/move" element={<IndexMove />} />
     </Routes>
   );
 };

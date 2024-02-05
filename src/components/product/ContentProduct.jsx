@@ -678,7 +678,7 @@ const columns = [
                           <DatePicker
                             defaultValue={dayjs(new Date())}
                             onChange={  handleInputDate }
-                             dateFormat="DD/MM/YYY" />
+                            format="DD/MM/YYYY" />
                       </LocalizationProvider>
                       </Grid>
                     </Grid>
