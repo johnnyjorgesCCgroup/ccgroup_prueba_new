@@ -314,7 +314,7 @@
               return response.json();
             }
 
-            setEfault(response.data);
+            setEfault(response.data.data);
             console.log("Aquiii", efault);
 
             // Si la respuesta no es exitosa, lanza un error
