@@ -297,12 +297,11 @@
       setSelAlm(sele);
     } ;
 
-    const consultaOC  =  async () => {
+    const consultaOC  =  async (oc) => {
       
       try {
-  
 
-          const response = await axios.post('https://api.cvimport.com/api/obteinOcLines', JSON.stringify(newProducto.oc));
+          const response = await axios.post('https://api.cvimport.com/api/obteinOcLines', JSON.stringify(oc));
           console.log('Respuesta del servidor:', response.data);
 
 
