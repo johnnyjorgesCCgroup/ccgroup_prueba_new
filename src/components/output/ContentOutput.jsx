@@ -303,8 +303,25 @@
               // Otros encabezados si es necesario
             },
             body: JSON.stringify(newProducto.oc),
+          })
+          .then(response => {
+            // Verifica si la respuesta es exitosa (código de estado 2xx)
+            if (response.ok) {
+              // Convierte la respuesta a JSON
+              return response.json();
+            }
+            // Si la respuesta no es exitosa, lanza un error
+            throw new Error('Error en la solicitud');
+          })
+          .then(data => {
+            // Maneja los datos de la respuesta
+            console.log(data);
+          })
+          .catch(error => {
+            // Maneja cualquier error
+            console.error('Error:', error);
           });
-          console.log("Respuesta:", response);
+
           // const valuePurchase = response.data.map((item) => ({ 
           //   name: item.name,
           //   product_id: item.product_id, 
