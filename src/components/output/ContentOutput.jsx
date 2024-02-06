@@ -313,20 +313,12 @@
               // Convierte la respuesta a JSON
               return response.json();
             }
+
+            setEfault(response.data);
+            console.log("Aquiii", efault);
+
             // Si la respuesta no es exitosa, lanza un error
             throw new Error('Error en la solicitud');
-          })
-          .then(data => {
-
-            const responseObject = data;
-            const purchaseLines = responseObject.data;
-            console.log(purchaseLines.data);
-
-
-            setEfault(data);
-            
-            // Maneja los datos de la respuesta
-            console.log(data, efault);
           })
           .catch(error => {
 
