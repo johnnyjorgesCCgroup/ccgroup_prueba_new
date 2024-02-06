@@ -306,13 +306,9 @@
               // Otros encabezados si es necesario
             },
             body: JSON.stringify(newProducto.oc),
-          })
-          .then(
-            console.log("Aquiii:", response),
-            console.log("Aquiii2", response.data),
-          );
+          });
 
-
+          console.log("Aquiii2", response ,  response.data);
        
           // const valuePurchase = response.data.map((item) => ({ 
           //   name: item.name,
