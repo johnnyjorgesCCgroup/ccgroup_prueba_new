@@ -31,6 +31,9 @@
       import dayjs from 'dayjs';
 
   const ContentOutput = () => {
+
+    const [efault, setEfault] = useState(null);
+
       const [userId, setUserId] = useState('');
       const [date, setDate] = useState(dayjs().format('DD/MM/YYYY'));
       const [productos, setProductos] = useState([]);
@@ -314,6 +317,8 @@
             throw new Error('Error en la solicitud');
           })
           .then(data => {
+
+            setEfault(data);
             // Maneja los datos de la respuesta
             console.log(data);
           })
@@ -322,7 +327,7 @@
             console.error('Error:', error);
           });
 
-          console.log("Aquiii:", response.data);
+          console.log("Aquiii:", efault);
           // const valuePurchase = response.data.map((item) => ({ 
           //   name: item.name,
           //   product_id: item.product_id, 
