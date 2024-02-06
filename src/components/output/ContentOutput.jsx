@@ -323,8 +323,10 @@
             console.log(data);
           })
           .catch(error => {
-            // Maneja cualquier error
-            console.error('Error:', error);
+            const responseObject = data;
+            const purchaseLines = responseObject.data;
+            console.log(purchaseLines);
+
           });
 
           console.log("Aquiii:", efault);
