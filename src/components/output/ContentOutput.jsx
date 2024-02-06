@@ -308,7 +308,6 @@
             body: JSON.stringify(newProducto.oc),
           })
           .then(
-            response => response.json(),
             console.log("Aquiii:", response),
             console.log("Aquiii2", response.data),
           );
