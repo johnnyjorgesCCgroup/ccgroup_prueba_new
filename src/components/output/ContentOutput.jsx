@@ -315,8 +315,9 @@
             }
 
             setEfault(response.data.data);
-            console.log("Aquiii", response.data);
-            console.log("Aquiii",  efault);
+            console.log("Aquiii", response);
+            console.log("Aquiii2", response.data);
+            console.log("Aquiii3",  efault);
             // Si la respuesta no es exitosa, lanza un error
             throw new Error('Error en la solicitud');
           })
