@@ -30,6 +30,7 @@ import InputLabel from '@mui/material/InputLabel';
     import dayjs from 'dayjs';
 
 const ContentPurchase = () => {
+  const [ocNext, setOcNext] = useState(null);  
   const [userId, setUserId] = useState('');
   const [date, setDate] = useState(dayjs().format('DD/MM/YYYY'));
   const [proveedor, setProveedor] = useState('');
@@ -74,6 +75,7 @@ const ContentPurchase = () => {
   useEffect(() => {
     obtenerProductosDesdeAPI();
     obtenerProveedoresDesdeAPI();
+    obtenerOCAPI();
   }, []);
 
   const obtenerProductosDesdeAPI = async () => {
@@ -94,6 +96,23 @@ const ContentPurchase = () => {
       console.error('Error en la solicitud:', error);
     }
   };
+
+  const obtenerOCAPI = async () => {
+    try {
+      setOcNext(null);
+      const response = await fetch('https://api.cvimport.com/api/obtenerSiguiente');
+      if (response.ok) {
+        const data = await response.json();
+        
+        const resultados_final = data.data;
+        setOcNext(data.data);
+        console.log("aQUIIIII:", resultados_final);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  };
+
 
   const obtenerProveedoresDesdeAPI = async () => {
     try {
@@ -337,22 +356,36 @@ const ContentPurchase = () => {
               Registro de Orden de Compra
             </Typography>
             </Grid>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={6}>
        
             <Autocomplete
                 value = {selProv || []}
                 id="combo-box-demo"
                 options={providerList || []}
-                sx={{ width:650 }}
+                sx={{ width:550 }}
                 renderInput={(params) => <TextField {...params} label="Proveedor" />}
                 onChange={ handleInputChangePurchase }
                 />
             </Grid>
 
-            <Grid item xs={12} md={4}>
-            <InputLabel>Fecha de Compra</InputLabel>
+            <Grid item xs={12} md={3} >
+                <TextField
+                fullWidth
+                label="Numero"
+                type="text"
+                name="text"
+                value={ocNext || [] }
+                // onChange={ handleInputChange }
+                margin="normal"
+                variant="filled"
+                dissable
+                />
+            </Grid>
+
+            <Grid item xs={12} md={3}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                label="Fecha de Compra"
                 defaultValue={dayjs(new Date())}
                 onChange={  handleInputDate }
                 format="DD/MM/YYYY" />

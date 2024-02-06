@@ -555,7 +555,7 @@
                 </Typography>
     
                 <Button variant="contained" onClick={enviarOrdenCompra}>
-                  Enviar Orden de Compra
+                  Enviar
                 </Button>
                 </div>           
             </Grid>
