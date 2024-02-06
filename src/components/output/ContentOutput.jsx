@@ -305,16 +305,16 @@
             body: JSON.stringify(newProducto.oc),
           });
           console.log("Respuesta:", response);
-          const valuePurchase = response.data.map((item) => ({ 
-            name: item.name,
-            product_id: item.product_id, 
-            sku: item.sku,
-            quantity:item.quantity,
-            price: item.price,
-            subtotal: item.quantity*item.price,
-          }));
+          // const valuePurchase = response.data.map((item) => ({ 
+          //   name: item.name,
+          //   product_id: item.product_id, 
+          //   sku: item.sku,
+          //   quantity:item.quantity,
+          //   price: item.price,
+          //   subtotal: item.quantity*item.price,
+          // }));
 
-          setProductos([...productos, valuePurchase]);
+          // setProductos([...productos, valuePurchase]);
         
       } catch (error) {
         console.error('Error en la solicitud:', error);
