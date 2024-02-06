@@ -510,22 +510,23 @@ const columns = [
     {
       field: 'almacen_1',
       headerName: 'Almacen Principal',
+      width: 170,
     },
     
     {
       field: 'almacen_2',
       headerName: 'Merma',
-     
+      width: 170,
     },
     {
       field: 'almacen_3',
       headerName: 'Tienda Magdalena',
-  
+      width: 170,
     },
     {
       field: 'almacen_4',
       headerName: 'FBF',
-
+      width: 170,
     },
 
           
