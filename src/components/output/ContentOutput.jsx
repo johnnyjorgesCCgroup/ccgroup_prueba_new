@@ -322,6 +322,7 @@
             console.error('Error:', error);
           });
 
+          console.log("Aquiii:", response.data);
           // const valuePurchase = response.data.map((item) => ({ 
           //   name: item.name,
           //   product_id: item.product_id, 
