@@ -500,12 +500,8 @@ const columns = [
     {
       field: 'nombre_producto',
       headerName: 'Nombre Producto',
+      width: 360,
     
-    },
-    {
-      field: 'nameProduct',
-      headerName: 'Nombre',
-      width: 305,
     },
     {
       field: 'SKU',
@@ -527,9 +523,9 @@ const columns = [
   
     },
     {
-      field: 'FBF',
-      headerName: 'Documento  ',
-      width: 155,
+      field: 'almacen_4',
+      headerName: 'FBF',
+
     },
 
           
