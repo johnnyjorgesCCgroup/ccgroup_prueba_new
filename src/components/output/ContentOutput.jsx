@@ -6,6 +6,7 @@
   import Swal from 'sweetalert2';
   import Modal from '@mui/material/Modal';
   import Box from '@mui/material/Box';
+  import axios from 'axios';
 
   import {
     Container,
@@ -299,14 +300,12 @@
     const consultaOC  =  async () => {
       
       try {
-          const response = await fetch('https://api.cvimport.com/api/obteinOcLines', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              // Otros encabezados si es necesario
-            },
-            body: JSON.stringify(newProducto.oc),
-          });
+  
+
+          const response = await axios.post('https://api.cvimport.com/api/obteinOcLines', JSON.stringify(newProducto.oc));
+          console.log('Respuesta del servidor:', response.data);
+
+
           const responseData = await response.json();
 
           console.log("Aquiii2", response ,  responseData);
