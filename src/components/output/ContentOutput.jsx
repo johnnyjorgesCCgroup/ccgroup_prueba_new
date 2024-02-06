@@ -318,14 +318,20 @@
           })
           .then(data => {
 
-            setEfault(data);
-            // Maneja los datos de la respuesta
-            console.log(data);
-          })
-          .catch(error => {
             const responseObject = data;
             const purchaseLines = responseObject.data;
-            console.log(purchaseLines);
+            console.log(purchaseLines.data);
+
+
+            setEfault(data);
+            
+            // Maneja los datos de la respuesta
+            console.log(data, efault);
+          })
+          .catch(error => {
+
+
+            console.log(error);
 
           });
 
