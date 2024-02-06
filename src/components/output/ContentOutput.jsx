@@ -309,11 +309,7 @@
           })
           .then(response => {
             // Verifica si la respuesta es exitosa (código de estado 2xx)
-            if (response.ok) {
-              // Convierte la respuesta a JSON
-              return response.json();
-            }
-
+         
             setEfault(response.data.data);
             console.log("Aquiii", response);
             console.log("Aquiii2", response.data);
