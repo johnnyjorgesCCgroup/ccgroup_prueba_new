@@ -499,8 +499,8 @@ const columns = [
       width: 40,
     },
     {
-      field: 'serie',
-      headerName: 'Serie',
+      field: 'nombre_producto',
+      headerName: 'Nombre Producto',
     
     },
     {
@@ -509,57 +509,31 @@ const columns = [
       width: 305,
     },
     {
-      field: 'skuProduct',
+      field: 'SKU',
       headerName: 'SKU',
     },
     {
-      field: 'almacen',
-      headerName: 'Almacen',
+      field: 'almacen_1',
+      headerName: 'Almacen Principal',
     },
     
     {
-      field: 'tipo',
-      headerName: 'Tipo',
+      field: 'almacen_2',
+      headerName: 'Merma',
      
     },
     {
-      field: 'quantity',
-      headerName: 'Cantidad',
+      field: 'almacen_3',
+      headerName: 'Tienda Magdalena',
   
     },
     {
-      field: 'document_number',
+      field: 'FBF',
       headerName: 'Documento  ',
       width: 155,
     },
-    {
-      field: 'status',
-      headerName: 'Status',
-        options: {
-          searchable: true,
-        },
-      valueFormatter: (params) => (params.value === 1 ? 'ANULADO' : 'FINALIZADO'),
 
-    },   
-            
-    {
-      field: 'Actions',
-      type: 'actions',
-      width: 130,
-      headerName: 'Acciones',
-      cellClassName: 'actions',
-      getActions: ({ id }) => {
-        return [
-
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={() => handleDelete(id )}
-            color="warning"
-          />,
-        ];  
-      },
-    },
+          
   ];
 
   return (
