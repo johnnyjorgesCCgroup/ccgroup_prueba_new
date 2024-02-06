@@ -164,15 +164,14 @@ const ContentStock = () => {
   const updateTableRows = (data) => {
     const rows = data.map((item) => ({
       id: item.id,
-      serie: item.serie,
-      nameProduct: item.nameProduct,
+      nombre_producto: item.nombre_producto,
+      SKU: item.SKU,
       skuProduct: item.skuProduct,
-      almacen: item.almacen,
-      tipo: item.tipo,
-      quantity: item.quantity,
-      price: item.price,
-      document_number: item.document_number,
-      
+      almacen_1: item.almacen_1,
+      almacen_2: item.almacen_2,
+      almacen_3: item.almacen_3,
+      almacen_4: item.almacen_4,
+
     }));
     setRows(rows);
   };
