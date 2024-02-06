@@ -291,7 +291,40 @@
       };
 
       setSelAlm(sele);
+    } ;
+
+    const consultaOC  =  async () => {
+      
+      try {
+          const response = await fetch('https://api.cvimport.com/api/obteinOcLines', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              // Otros encabezados si es necesario
+            },
+            body: JSON.stringify(newProducto.oc),
+          });
+          console.log("Respuesta:", response);
+          const valuePurchase = response.data.map((item) => ({ 
+            name: item.name,
+            product_id: item.product_id, 
+            sku: item.sku,
+            quantity:item.quantity,
+            price: item.price,
+            subtotal: item.quantity*item.price,
+          }));
+
+          setProductos([...productos, valuePurchase]);
+        
+      } catch (error) {
+        console.error('Error en la solicitud:', error);
+      }
+
     } 
+
+
+    
+
 
       const handleInputChangeOutput   = (event, value) => {
         setMarket( value.key)
@@ -406,7 +439,7 @@
                     <TextField
                         fullWidth
                         label="Folio/Documento"
-                        type="number"
+                        type="textnp"
                         name="oc"
                         value={newProducto.oc}
                         // value={newPurchaseLine.oc || [] }
@@ -420,7 +453,8 @@
                           variant="contained"
                           color="primary"
                           startIcon={<FontAwesomeIcon icon={faSearch} />}
-                        //   onClick={() => {
+                           onClick={
+                            () => { consultaOC( newProducto.oc  )   }  } 
                         //     setEditingMode(false);
                         //     setOpenModal(true);
                         //     handleCreateProduct;
