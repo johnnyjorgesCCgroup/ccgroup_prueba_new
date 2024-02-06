@@ -307,24 +307,13 @@
             },
             body: JSON.stringify(newProducto.oc),
           })
-          .then(response => {
-            // Verifica si la respuesta es exitosa (código de estado 2xx)
-         
-            setEfault(response.data.data);
-
-            // Si la respuesta no es exitosa, lanza un error
-            throw new Error('Error en la solicitud');
-          })
-          .catch(error => {
+          .then(
+            response => response.json(),
+            console.log("Aquiii:", response),
+            console.log("Aquiii2", response.data),
+          );
 
 
-            console.log(error);
-
-          });
-
-          console.log("Aquiii:", efault);
-          console.log("Aquiii", response);
-          console.log("Aquiii2", response.data);
        
           // const valuePurchase = response.data.map((item) => ({ 
           //   name: item.name,
