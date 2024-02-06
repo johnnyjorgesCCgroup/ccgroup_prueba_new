@@ -301,12 +301,17 @@
       
       try {
 
-          const response = await axios.post('https://api.cvimport.com/api/obteinOcLines', JSON.stringify(oc));
+          const response = await fetch('https://api.cvimport.com/api/product', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(oc),
+          });
+
+
           console.log('Respuesta del servidor:', response.data);
-
-
           const responseData = await response.json();
-
           console.log("Aquiii2", response ,  responseData);
        
           // const valuePurchase = response.data.map((item) => ({ 
