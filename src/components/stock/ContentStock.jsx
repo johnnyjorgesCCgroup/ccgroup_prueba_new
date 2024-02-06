@@ -32,7 +32,7 @@ import {
 
 import * as XLSX from 'xlsx';
 
-const ContentProduct = () => {
+const ContentStock = () => {
 
   const [pdf, setPdf] = useState(null);
   const [subCategoryId, setsubCategoryIdy] = useState(null);
@@ -68,13 +68,13 @@ const ContentProduct = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://api.cvimport.com/api/product');
+      const response = await fetch('https://api.cvimport.com/api/obtenerStock');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+      
       const valor = await response.json();
-
-
+      console.log(valor);
       setData(valor.data);
       updateTableRows(valor.data);
       setPdf(valor.data);
@@ -130,7 +130,7 @@ const ContentProduct = () => {
   const fetchDataSelectSubCategoryEdit = async (id) => {
     try {
       console.log(id);
-    const response_category = await fetch('https://api.cvimport.com/api/subcategory');
+    const response_category = await fetch('https://api.cvimport.com/api/inventoryMoves');
     if (!response_category.ok) {
       throw new Error(`HTTP error! Status: ${response_category.status}`);
     }
@@ -164,23 +164,15 @@ const ContentProduct = () => {
   const updateTableRows = (data) => {
     const rows = data.map((item) => ({
       id: item.id,
-      name: item.name,
-      sku: item.sku,
-      sku_serie: item.sku_serie,
-      sku_number: item.sku_number,
-      external_sku: item.external_sku,
-      product_image: item.product_image,
-      purchase_price: item.purchase_price,
-      selling_price: item.selling_price,
-      entry_date: item.entry_date,
-      category_id: item.category_id,
-      categoria: item.categoria,
-      subcategoria: item.subcategoria,
-      unit: item.unit,
-      status: item.status,
-      initial_stock: item.initial_stock,
-      min_stock: item.min_stock,
-      stock: item.stock,
+      serie: item.serie,
+      nameProduct: item.nameProduct,
+      skuProduct: item.skuProduct,
+      almacen: item.almacen,
+      tipo: item.tipo,
+      quantity: item.quantity,
+      price: item.price,
+      document_number: item.document_number,
+      
     }));
     setRows(rows);
   };
@@ -421,7 +413,7 @@ try {
 
 const handleStatus = async (id)  => {
   try {  
-    const response = await fetch(`https://api.cvimport.com/api/product/statusUpdate/${id}`);
+    const response = await fetch(`http://161.132.40.129/api/product/statusUpdate/${id}`);
     const valor = await response.json();
     setNewProduct((prevProduct) => ({
       ...prevProduct,
@@ -507,52 +499,46 @@ const columns = [
       width: 40,
     },
     {
-      field: 'name',
+      field: 'serie',
+      headerName: 'Serie',
+    
+    },
+    {
+      field: 'nameProduct',
       headerName: 'Nombre',
-      width: 320,
+      width: 305,
     },
     {
-      field: 'sku',
-      headerName: 'sku',
-
+      field: 'skuProduct',
+      headerName: 'SKU',
     },
     {
-      field: 'categoria',
-      headerName: 'categoria',
-      options: {
-        searchable: true,
-      },
-    },
-    {
-      field: 'subcategoria',
-      headerName: 'subcategoria',
-      options: {
-        searchable: true,
-      },
+      field: 'almacen',
+      headerName: 'Almacen',
     },
     
     {
-      field: 'selling_price',
-      headerName: 'Precio de Venta',
+      field: 'tipo',
+      headerName: 'Tipo',
      
     },
     {
-      field: 'purchase_price',
-      headerName: 'Precio de Compra',
+      field: 'quantity',
+      headerName: 'Cantidad',
   
     },
     {
-      field: 'unit',
-      headerName: 'Unidad',
-  
+      field: 'document_number',
+      headerName: 'Documento  ',
+      width: 155,
     },
     {
       field: 'status',
-      headerName: 'status',
+      headerName: 'Status',
         options: {
           searchable: true,
         },
-      valueFormatter: (params) => (params.value === 1 ? 'ACTIVE' : 'INACTIVE'),
+      valueFormatter: (params) => (params.value === 1 ? 'ANULADO' : 'FINALIZADO'),
 
     },   
             
@@ -564,25 +550,13 @@ const columns = [
       cellClassName: 'actions',
       getActions: ({ id }) => {
         return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={() => handleEdit(id  )  }
-            color="success"
-          />,
+
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => handleDelete(id )}
             color="warning"
           />,
-          <GridActionsCellItem
-          icon={<OnlinePrediction />}
-          label="Status"
-          onClick={() => handleStatus(id )}
-          color="primary"
-        />,
         ];  
       },
     },
@@ -595,7 +569,7 @@ const columns = [
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1 className="m-0">Productos</h1>
+              <h1 className="m-0">Movimientos</h1>
             </div>
             {/* /.col */}
             <div className="col-sm-6">
@@ -603,7 +577,7 @@ const columns = [
                 <li className="breadcrumb-item">
                   <a href="#">Home</a>
                 </li>
-                <li className="breadcrumb-item active">Productos</li>
+                <li className="breadcrumb-item active">v</li>
               </ol>
             </div>
             {/* /.col */}
@@ -619,7 +593,7 @@ const columns = [
               <div className="card">
                 <div className="card-header border-0">
                   <div className="d-flex justify-content-between">
-                    <h3 className="card-title">Listado de Productos</h3>
+                    <h3 className="card-title">Listado de Movimientos</h3>
                     <Button
                       variant="contained"
                       color="success"
@@ -628,23 +602,10 @@ const columns = [
                         handleDownload();
                       }} 
                     >
-                      Descargr Productos
+                      Descargr Movientos
                     </Button>
 
                     
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      startIcon={<FontAwesomeIcon icon={faPlusCircle} />}
-                      onClick={() => {
-                        setEditingMode(false);
-                        setOpenModal(true);
-                        handleCreateProduct;
-                        setNewProduct({ id:'' , name: '', sku: '' });
-                      }} 
-                    >
-                      Crear Producto
-                    </Button>
                     <Modal open={openModal} 
                           onClose={handleCloseModal}
                           >
@@ -885,7 +846,7 @@ const style  = {
   },
 };
 
-export default ContentProduct;
+export default ContentStock;
 
 
 

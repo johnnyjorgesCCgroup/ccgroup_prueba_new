@@ -329,7 +329,7 @@
         setEditingProduct(productToEdit);
         setIsModalOpen(true);
       };
-
+    
       const handleModalOpen = () => {
         setIsModalOpen(true);
       };
@@ -338,7 +338,7 @@
         setIsModalOpen(false);
         setEditingProduct(null);
       };
-
+    
       const modalContent = (
         <Box
           sx={{
@@ -372,7 +372,7 @@
           </Button>
         </Box>
       );
-
+    
       const handleEditInputChange = (event) => {
         const { value } = event.target;
         setEditingProduct((prevProduct) => ({
@@ -380,7 +380,7 @@
           quantity: value,
         }));
       };
-
+    
       const guardarEdicionCantidad = () => {
         // Implementar lógica para guardar la edición de cantidad
         // Puedes actualizar el estado y cerrar el modal
@@ -390,8 +390,8 @@
         setProductos(updatedProducts);
         handleModalClose();
       };
-
-
+    
+      
       return (
         <Container >
           <Grid container marginLeft={10}  spacing={2} alignItems="center">

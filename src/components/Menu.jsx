@@ -207,7 +207,7 @@ const Menu = () => {
                 data-accordion="false"
               >
                 <li className="nav-item">
-                  <Link to="/category" className="nav-link">
+                  <Link to="/stock" className="nav-link">
                     <i className="far fa-circle nav-icon" />
                     <p>Stock</p>
                   </Link>

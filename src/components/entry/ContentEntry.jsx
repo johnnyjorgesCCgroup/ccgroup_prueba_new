@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
@@ -329,6 +332,67 @@ const ContentEntry = () => {
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
+  
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  };
+
+  const modalContent = (
+    <Box
+      sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+      }}
+    >
+      <Typography variant="h6" gutterBottom>
+        Editar Cantidad
+      </Typography>
+      {/* Contenido del modal, por ejemplo, un campo de entrada para la nueva cantidad */}
+      <TextField
+        fullWidth
+        label="Nueva Cantidad"
+        type="number"
+        name="newQuantity"
+        value={editingProduct ? editingProduct.quantity : ''}
+        onChange={(event) => handleEditInputChange(event)}
+        margin="normal"
+      />
+      <Button variant="contained" onClick={() => guardarEdicionCantidad()}>
+        Guardar
+      </Button>
+      <Button variant="contained" onClick={handleModalClose}>
+        Cancelar
+      </Button>
+    </Box>
+  );
+
+  const handleEditInputChange = (event) => {
+    const { value } = event.target;
+    setEditingProduct((prevProduct) => ({
+      ...prevProduct,
+      quantity: value,
+    }));
+  };
+
+  const guardarEdicionCantidad = () => {
+    // Implementar lógica para guardar la edición de cantidad
+    // Puedes actualizar el estado y cerrar el modal
+    const updatedProducts = productos.map((prod) =>
+      prod.sku === editingProduct.sku ? { ...prod, quantity: editingProduct.quantity } : prod
+    );
+    setProductos(updatedProducts);
+    handleModalClose();
+  };
+
+  
+
+
   return (
     <Container >
       <Grid container marginLeft={10}  spacing={2} alignItems="center">

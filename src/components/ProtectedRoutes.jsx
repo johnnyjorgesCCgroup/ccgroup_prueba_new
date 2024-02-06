@@ -14,6 +14,7 @@ import IndexOutput from '../views/Output/index';
 import IndexEntry from '../views/Entry/index';
 import IndexWarehouse from '../views/Warehouse/index';
 import IndexMove from '../views/Move/index';
+import IndexStock from '../views/Stock/index';
 
 import './ProtectedRoutes.css'
 
@@ -55,6 +56,7 @@ const ProtectedRoutes = () => {
       <Route path="/output" element={<IndexOutput />} />
       <Route path="/warehouse" element={<IndexWarehouse />} />
       <Route path="/move" element={<IndexMove />} />
+      <Route path="/stock" element={<IndexStock />} />
     </Routes>
   );
 };
