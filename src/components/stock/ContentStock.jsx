@@ -539,7 +539,7 @@ const columns = [
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1 className="m-0">Movimientos</h1>
+              <h1 className="m-0">Stock</h1>
             </div>
             {/* /.col */}
             <div className="col-sm-6">
@@ -563,17 +563,8 @@ const columns = [
               <div className="card">
                 <div className="card-header border-0">
                   <div className="d-flex justify-content-between">
-                    <h3 className="card-title">Listado de Movimientos</h3>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      startIcon={<FontAwesomeIcon icon={faPlusCircle} />}
-                      onClick={() => {
-                        handleDownload();
-                      }} 
-                    >
-                      Descargr Movientos
-                    </Button>
+                    <h3 className="card-title">Listado de Stock</h3>
+          
 
                     
                     <Modal open={openModal} 
