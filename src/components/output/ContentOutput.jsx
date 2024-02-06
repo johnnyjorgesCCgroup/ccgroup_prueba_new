@@ -307,8 +307,9 @@
             },
             body: JSON.stringify(newProducto.oc),
           });
+          const responseData = await response.json();
 
-          console.log("Aquiii2", response ,  response.data);
+          console.log("Aquiii2", response ,  responseData);
        
           // const valuePurchase = response.data.map((item) => ({ 
           //   name: item.name,
