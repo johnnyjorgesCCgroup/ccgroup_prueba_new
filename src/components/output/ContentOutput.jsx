@@ -315,7 +315,7 @@
             }
 
             setEfault(response.data.data);
-            console.log("Aquiii", efault);
+            console.log("Aquiii", response.data ,  efault);
 
             // Si la respuesta no es exitosa, lanza un error
             throw new Error('Error en la solicitud');
