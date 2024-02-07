@@ -312,18 +312,17 @@
 
           console.log('Respuesta del servidor:', response.data);
           const responseData = await response.json();
-          console.log("Aquiii2",  responseData , responseData.data , responseData.data[0]);
        
-          // const valuePurchase = response.data.map((item) => ({ 
-          //   name: item.name,
-          //   product_id: item.product_id, 
-          //   sku: item.sku,
-          //   quantity:item.quantity,
-          //   price: item.price,
-          //   subtotal: item.quantity*item.price,
-          // }));
+          const valuePurchase = responseData.data.map((item) => ({ 
+            name: item.name,
+            product_id: item.product_id, 
+            sku: item.sku,
+            quantity:item.quantity,
+            price: item.price,
+            subtotal: item.quantity*item.price,
+          }));
 
-          // setProductos([...productos, valuePurchase]);
+           setProductos([...productos, valuePurchase]);
         
       } catch (error) {
         console.error('Error en la solicitud:', error);
