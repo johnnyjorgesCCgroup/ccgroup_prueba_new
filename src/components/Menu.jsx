@@ -225,9 +225,9 @@ const Menu = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/" className="nav-link">
+                  <Link to="/transfer" className="nav-link">
                     <i className="far fa-circle nav-icon" />
-                    <p>Kardex</p>
+                    <p>Traslado</p>
                   </Link>
                 </li>
                 <li className="nav-item">
