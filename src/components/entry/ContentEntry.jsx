@@ -321,6 +321,40 @@ const ContentEntry = () => {
 
   }
 
+  const consultaOC  =  async (oc) => {
+      
+    try {
+
+        const response = await fetch('https://api.cvimport.com/api/obteinOcLines', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(oc),
+        });
+
+
+        console.log('Respuesta del servidor:', response.data);
+        const responseData = await response.json();
+     
+        const valuePurchase = responseData.data.map((item) => ({ 
+          name: item.name,
+          product_id: item.product_id, 
+          sku: item.sku,
+          quantity:item.quantity,
+          price: item.price,
+          subtotal: item.quantity*item.price,
+        }));
+
+
+         setProductos(valuePurchase);
+         console.log("Aquiii2",  productos );
+         console.log("Aquiii3",   valuePurchase );
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+
+  } 
   
   const editarProducto = (sku) => {
     const productToEdit = productos.find((prod) => prod.sku === sku);
@@ -417,9 +451,11 @@ const ContentEntry = () => {
 
             <Grid item xs={12} md={1}>
             <Button
-                      variant="contained"
-                      color="primary"
-                      startIcon={<FontAwesomeIcon icon={faSearch} />}
+                          variant="contained"
+                          color="primary"
+                          startIcon={<FontAwesomeIcon icon={faSearch} />}
+                           onClick={
+                            () => { consultaOC( newProducto.oc  )   }  } 
                     //   onClick={() => {
                     //     setEditingMode(false);
                     //     setOpenModal(true);
