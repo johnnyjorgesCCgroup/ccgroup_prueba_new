@@ -117,6 +117,7 @@ const ContentEntry = () => {
         }));
         
         setProductoList(resultados_final);
+        setSelAlm({     label: 'Almacen Principal AP'  ,   key:  1  })
         console.log(resultados_final);
       }
     } catch (error) {
