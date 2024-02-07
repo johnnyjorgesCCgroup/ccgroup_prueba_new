@@ -324,7 +324,7 @@
           // }));
 
           // setProductos([...productos, valuePurchase]);
-        
+          consultaOC();
       } catch (error) {
         console.error('Error en la solicitud:', error);
       }
