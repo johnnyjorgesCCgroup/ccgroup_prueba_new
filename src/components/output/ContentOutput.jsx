@@ -301,7 +301,7 @@
       
       try {
 
-          const response = await fetch('https://api.cvimport.com/api/product', {
+          const response = await fetch('https://api.cvimport.com/api/obteinOcLines', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
