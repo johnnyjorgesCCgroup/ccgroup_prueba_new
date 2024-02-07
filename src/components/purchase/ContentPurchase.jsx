@@ -237,6 +237,7 @@ const ContentPurchase = () => {
       console.error('Error al enviar la orden de compra:', error);
       // Puedes manejar el error de alguna manera (mostrar un mensaje de error, etc.)
     }
+    obtenerOCAPI();
 
   setProductos([]);
   setSelProv([]);
