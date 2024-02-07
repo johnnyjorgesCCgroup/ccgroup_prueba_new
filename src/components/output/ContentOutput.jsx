@@ -322,6 +322,8 @@
             subtotal: item.quantity*item.price,
           }));
 
+          console.log("Aquiii2",  valuePurchase , responseData.data );
+
            setProductos([...productos, valuePurchase]);
         
       } catch (error) {
