@@ -324,8 +324,8 @@
 
 
            setProductos(valuePurchase);
-           console.log("Aquiii2",  productos,  valuePurchase , responseData.data );
-
+           console.log("Aquiii2",  productos );
+           console.log("Aquiii3",   valuePurchase );
       } catch (error) {
         console.error('Error en la solicitud:', error);
       }
