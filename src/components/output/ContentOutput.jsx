@@ -323,7 +323,7 @@
           }));
 
 
-           setProductos([...productos, valuePurchase]);
+           setProductos(valuePurchase);
            console.log("Aquiii2",  productos,  valuePurchase , responseData.data );
 
       } catch (error) {
