@@ -322,10 +322,10 @@
             subtotal: item.quantity*item.price,
           }));
 
-          console.log("Aquiii2",  valuePurchase , responseData.data );
 
            setProductos([...productos, valuePurchase]);
-        
+           console.log("Aquiii2",  productos,  valuePurchase , responseData.data );
+
       } catch (error) {
         console.error('Error en la solicitud:', error);
       }
