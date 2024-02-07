@@ -450,7 +450,7 @@
                         label="Folio/Documento"
                         type="textnp"
                         name="oc"
-                        value={newProducto.oc}
+                        value={newProducto.oc || [] }
                         // value={newPurchaseLine.oc || [] }
                         onChange={ handleInputChangeWarehouse }
                         margin="normal"
