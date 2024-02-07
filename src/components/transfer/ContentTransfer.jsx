@@ -39,6 +39,8 @@ const ContentTransfer = () => {
     const [date, setDate] = useState(dayjs().format('DD/MM/YYYY'));
     const [productos, setProductos] = useState([]);
     const [almacen, setAlmacen] = useState([]);
+    const [almacenO, setAlmacenO] = useState([]);
+
     const [market, setMarket] = useState([]);
 
     const [total, setTotal] = useState(0);  
@@ -49,12 +51,15 @@ const ContentTransfer = () => {
     const [selProd, setSelProd] = useState([]);
     const [selMarket, setSelMarket] = useState([]);
     const [selAlm, setSelAlm] = useState([]);
-    
+    const [selAlmO, setSelAlmO] = useState([]);
+
+
     const [updateCount, setUpdateCount] = useState(0);
     const [nuevoTotal, setNuevoTotal] = useState(0);
     const [newProducto, setNewProducto] = useState({ 
       id:'' , 
       marketPlace_id: '',
+      warehouse_idO: '',
       warehouse_id: '',
       date : '',
       total : ''
@@ -231,6 +236,7 @@ const ContentTransfer = () => {
   
   
       const send = {
+        "warehouse_idO":almacenO,
         "warehouse_id":almacen,
         "oc": newProducto.oc , 
         "marketPlace_id": market ,
@@ -258,6 +264,7 @@ const ContentTransfer = () => {
     setProductos([]);
     setSelMarket([]);
     setSelAlm([]);
+    setSelAlmO([]);
     newProducto.oc = '';
     Swal.fire({
       icon: 'success',
@@ -297,6 +304,16 @@ const ContentTransfer = () => {
     setSelAlm(sele);
   } ;
 
+  const handleInputChangeAlmacenO  = (event, value) => {
+    
+    setAlmacenO( value.key)
+    const sele = {
+      label: value.label, 
+      key: value.key 
+    };
+
+    setSelAlmO(sele);
+  } ;
   const consultaOC  =  async (oc) => {
     
     try {
@@ -441,52 +458,22 @@ const ContentTransfer = () => {
               <Grid item xs={12} md={12}>
                   <br />
               <Typography variant="h5" gutterBottom>
-                Registro de Salidas de Mercaderia
+                Registro de Traslados de Mercaderia
               </Typography>
               </Grid>
   
-              <Grid item xs={12} md={3}>
-                  <TextField
-                      fullWidth
-                      label="Folio/Documento"
-                      type="textnp"
-                      name="oc"
-                      value={newProducto.oc || [] }
-                      // value={newPurchaseLine.oc || [] }
-                      onChange={ handleInputChangeWarehouse }
-                      margin="normal"
-                      />
-              </Grid>
-  
-              <Grid item xs={12} md={1}>
-              <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<FontAwesomeIcon icon={faSearch} />}
-                         onClick={
-                          () => { consultaOC( newProducto.oc  )   }  } 
-                      //     setEditingMode(false);
-                      //     setOpenModal(true);
-                      //     handleCreateProduct;
-                      //     setNewProduct({ id:'' , name: '', sku: '' });
-                      //   }} 
-                      >
-                        
-                      </Button>
-  
-              </Grid>    
   
   
-              <Grid item xs={12} md={2}>
+  
+              <Grid item xs={12} md={4}>
   
               <Autocomplete
-                  value = {selMarket || []}
+                  value = {selAlmO || []}
                   id="combo-box-demo"
-            //      options={providerList || []}
-                  options={marketPlaceList || []}
-                  sx={{ width:180 }}
-                  renderInput={(params) => <TextField {...params} label="Market Place" />}
-                  onChange={ handleInputChangeOutput }
+                  options={almacenList || []}
+                  sx={{ width:320 }}
+                  renderInput={(params) => <TextField {...params} label="Almacen Origen" />}
+                  onChange={ handleInputChangeAlmacenO }
                   />
   
   
@@ -494,14 +481,14 @@ const ContentTransfer = () => {
             
 
             
-              <Grid item xs={12} md={2}>
+              <Grid item xs={12} md={4}>
 
               <Autocomplete
                   value = {selAlm || []}
                   id="combo-box-demo"
                   options={almacenList || []}
-                  sx={{ width:180 }}
-                  renderInput={(params) => <TextField {...params} label="Almacen" />}
+                  sx={{ width:320 }}
+                  renderInput={(params) => <TextField {...params} label="Almacen Destino" />}
                   onChange={ handleInputChangeAlmacen }
                   />
               </Grid>
