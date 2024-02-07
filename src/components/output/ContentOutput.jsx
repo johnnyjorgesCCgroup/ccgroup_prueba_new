@@ -312,7 +312,7 @@
 
           console.log('Respuesta del servidor:', response.data);
           const responseData = await response.json();
-          console.log("Aquiii2", response ,  responseData);
+          console.log("Aquiii2", response.data ,  responseData);
        
           // const valuePurchase = response.data.map((item) => ({ 
           //   name: item.name,
