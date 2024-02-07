@@ -246,7 +246,7 @@ const ContentTransfer = () => {
         "user_id":userId
       }
   
-      const response = await fetch('https://api.cvimport.com/api/inventoryOutput', {
+      const response = await fetch('https://api.cvimport.com/api/transfer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
