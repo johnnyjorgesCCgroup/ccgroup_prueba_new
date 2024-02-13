@@ -282,6 +282,32 @@ const Menu = () => {
               </ul>
             </li>
 
+                        
+            <li className="nav-item">
+              <a href="#" className="nav-link">
+                <i className="nav-icon fas fa-solid  fa-bookmark" />
+                <p>
+                  Cortes
+                  <i className="fas fa-angle-left right" />
+                </p>
+              </a>
+              <ul
+                className="nav nav-treeview nav-pills nav-sidebar flex-column"
+                ref={treeviewRef} // Asigna el ref al elemento que deseas seleccionar
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false"
+              >
+                <li className="nav-item">
+                  <Link to="/cut" className="nav-link">
+                    <i className="far fa-circle nav-icon" />
+                    <p>Listado</p>
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+
             <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-solid  fa-users" />
