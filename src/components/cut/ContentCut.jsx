@@ -633,7 +633,7 @@ const columns = [
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1 className="m-0">Movimientos</h1>
+              <h1 className="m-0">Cortes</h1>
             </div>
             {/* /.col */}
             <div className="col-sm-6">
@@ -657,16 +657,15 @@ const columns = [
               <div className="card">
                 <div className="card-header border-0">
                   <div className="d-flex justify-content-between">
-                    <h3 className="card-title">Listado de Movimientos</h3>
+                    <h3 className="card-title">Listado de Cortes</h3>
 
                       <input type="file" accept=".xls,.xlsx" onChange={e => setFile(e.target.files[0])} />
-                      <button onClick={handleConvert}>Convert</button>
 
                          <Button
                           variant="contained"
-                          color="secondary"
+                          color="blue"
                           onClick={handleConvert}                    >
-                          Cargar 
+                          Cargar Saga Falabella
                         </Button>
 
                       <pre>{jsonData}</pre>
