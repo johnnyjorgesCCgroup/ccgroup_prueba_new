@@ -661,6 +661,14 @@ const columns = [
 
                       <input type="file" accept=".xls,.xlsx" onChange={e => setFile(e.target.files[0])} />
                       <button onClick={handleConvert}>Convert</button>
+
+                         <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleConvert}                    >
+                          Cargar 
+                        </Button>
+
                       <pre>{jsonData}</pre>
 
 
