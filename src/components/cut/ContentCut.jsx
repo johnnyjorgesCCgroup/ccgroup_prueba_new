@@ -631,21 +631,15 @@ const columns = [
                     <h3 className="card-title">Listado de Movimientos</h3>
 
                     <form onSubmit={handleSubmit}>
-                      <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        startIcon={<CloudUploadIcon />}
-                      >
-                        Upload file
-                        <VisuallyHidden>
-                          <input type="file" onChange={handleFileChange} />
-                        </VisuallyHidden>
-                      </Button>
-                      <Button type="submit" variant="contained" color="primary">
-                        Submit
-                      </Button>
-                    </form>
+                        <input type="file" onChange={handleFileChange} />
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          startIcon={<CloudUploadIcon />}
+                        >
+                          Upload file
+                        </Button>
+                      </form>
 
 
                     <Modal open={openModal} 
