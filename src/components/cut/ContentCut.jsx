@@ -66,12 +66,13 @@ const ContentCut = () => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
+    console.log(event);
     setSelectedFile(event.target.files[0]);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    console.log(event);
     if (!selectedFile) {
       console.error('No file selected');
       return;
