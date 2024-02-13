@@ -80,7 +80,7 @@ const ContentCut = () => {
 
     const reader = new FileReader();
 
-    
+    console.log("Aqqui Json data:",reader);
     reader.onload = (event) => {
       const data = new Uint8Array(event.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
