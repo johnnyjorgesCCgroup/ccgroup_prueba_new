@@ -63,6 +63,17 @@ const ContentCut = () => {
   //Avisa si es edit al componente
   const [editingMode, setEditingMode] = useState(false);
 
+  event.preventDefault();
+
+  if (!selectedFile) {
+    console.error('No file selected');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', selectedFile);
+  
+
   useEffect(() => {
 
     fetchData();
@@ -610,21 +621,23 @@ const columns = [
                   <div className="d-flex justify-content-between">
                     <h3 className="card-title">Listado de Movimientos</h3>
 
-                    <Button
+                    <form onSubmit={handleSubmit}>
+                      <Button
                         component="label"
                         role={undefined}
                         variant="contained"
-                        tabIndex={-1}
-                        onClick={() => {
-                            handleDownload();
-                          }} 
                         startIcon={<CloudUploadIcon />}
-                        >
+                      >
                         Upload file
-                        <VisuallyHiddenInput type="file" />
-                        </Button>
+                        <VisuallyHidden>
+                          <input type="file" onChange={handleFileChange} />
+                        </VisuallyHidden>
+                      </Button>
+                      <Button type="submit" variant="contained" color="primary">
+                        Submit
+                      </Button>
+                    </form>
 
-                    <input type="file" accept=".xlsx, .xls" />
 
                     <Modal open={openModal} 
                           onClose={handleCloseModal}
