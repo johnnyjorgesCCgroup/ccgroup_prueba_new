@@ -88,7 +88,7 @@ const ContentCut = () => {
       const worksheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-      console.log(jsonData);
+      console.log("Aqqui Json data:",jsonData);
       // Enviar los datos a la API
     //  sendDataToAPI(jsonData);
     };
