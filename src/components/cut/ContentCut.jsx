@@ -631,18 +631,20 @@ const columns = [
                     <h3 className="card-title">Listado de Movimientos</h3>
 
                     <form onSubmit={handleSubmit}>
-                    <Button
-                          type="file"
-                          variant="contained"
-                          startIcon={<CloudUploadIcon />}
+                       <Button
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
                         >
                           Cargar Saga
+                          <VisuallyHiddenInput type="file" />
                         </Button>
 
                         <Button
                           type="submit"
                           variant="contained"
-                          startIcon={<CloudUploadIcon />}
                         >
                           Subir
                         </Button>
