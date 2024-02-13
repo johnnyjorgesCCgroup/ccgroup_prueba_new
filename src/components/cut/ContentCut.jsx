@@ -63,16 +63,25 @@ const ContentCut = () => {
   //Avisa si es edit al componente
   const [editingMode, setEditingMode] = useState(false);
 
-  event.preventDefault();
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  if (!selectedFile) {
-    console.error('No file selected');
-    return;
-  }
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
-  const formData = new FormData();
-  formData.append('file', selectedFile);
-  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!selectedFile) {
+      console.error('No file selected');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+
+  };
 
   useEffect(() => {
 
