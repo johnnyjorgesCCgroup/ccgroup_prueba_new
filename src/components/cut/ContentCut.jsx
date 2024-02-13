@@ -636,6 +636,7 @@ const columns = [
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
+                        onChange={handleFileChange}
                         startIcon={<CloudUploadIcon />}
                         >
                           Cargar Saga
