@@ -4,12 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "prestart": "node_modules/.bin/chmod +x node_modules/.bin/vite",
+    "start": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "start": "serve dist -s -n -L -p $PORT",
-    "vite": "chmod -R 777/path/to/folder"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
