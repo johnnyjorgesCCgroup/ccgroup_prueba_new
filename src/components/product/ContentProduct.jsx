@@ -73,7 +73,7 @@ const ContentProduct = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:3006/products');
+      const response = await fetch('https://api.cvimport.com/api/product');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
