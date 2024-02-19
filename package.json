@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "serve dist -s -n -L -p $PORT"
+    "start": "serve dist -s -n -L -p $PORT",
+    "vite": "chmod -R 777/path/to/folder"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
