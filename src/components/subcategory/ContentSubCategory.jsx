@@ -36,7 +36,7 @@ const ContentSubCategory = () => {
 
   const fetchDataSelect = async () => {
     try {
-    const response_category = await fetch('https://api.cvimport.com/api/category');
+    const response_category = await fetch('http://localhost:8080/https://api.cvimport.com/api/category');
     if (!response_category.ok) {
       throw new Error(`HTTP error! Status: ${response_category.status}`);
     }
@@ -52,7 +52,7 @@ const ContentSubCategory = () => {
   const fetchDataSelectEdit = async ( res ) => {
     try {
 
-    const response_category = await fetch('https://api.cvimport.com/api/category');
+    const response_category = await fetch('http://localhost:8080/https://api.cvimport.com/api/category');
     if (!response_category.ok) {
       throw new Error(`HTTP error! Status: ${response_category.status}`);
     }
@@ -80,7 +80,7 @@ const ContentSubCategory = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://api.cvimport.com/api/subcategory');
+      const response = await fetch('http://localhost:8080/https://api.cvimport.com/api/subcategory');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       };
@@ -125,7 +125,7 @@ const ContentSubCategory = () => {
       fetchData();
       if (result.isConfirmed) {
         try {
-          await fetch(`https://api.cvimport.com/api/subcategory/${id}`, {
+          await fetch(`http://localhost:8080/https://api.cvimport.com/api/subcategory/${id}`, {
             method: 'DELETE',
           });
 
@@ -163,7 +163,7 @@ const ContentSubCategory = () => {
     try {
       console.log(newSubCategory, categoryId);
          console.log("hola Edicion:", categoryId ,  newSubCategory.id , newSubCategory);
-         const response = await fetch(`https://api.cvimport.com/api/subcategory/${newSubCategory.id}`, {
+         const response = await fetch(`http://localhost:8080/https://api.cvimport.com/api/subcategory/${newSubCategory.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ const ContentSubCategory = () => {
     try {
       console.log("Aquiiii:",newSubCategory);
       setEditingMode(false);
-      const response = await fetch('https://api.cvimport.coom/api/subcategory', {
+      const response = await fetch('http://localhost:8080/https://api.cvimport.coom/api/subcategory', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

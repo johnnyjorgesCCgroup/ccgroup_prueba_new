@@ -17,6 +17,7 @@ import IndexMove from '../views/Move/index';
 import IndexStock from '../views/Stock/index';
 import IndexTransfer from '../views/Transfer/index';
 import IndexCut from '../views/Cut/index';
+import IndexDashboard from '../views/Dashboard/index';
 
 
 import './ProtectedRoutes.css'
@@ -62,6 +63,7 @@ const ProtectedRoutes = () => {
       <Route path="/stock" element={<IndexStock />} />
       <Route path="/transfer" element={<IndexTransfer />} />
       <Route path="/cut" element={<IndexCut />} />
+      <Route path="/dashboard" element={<IndexDashboard />} />
     </Routes>
   );
 };

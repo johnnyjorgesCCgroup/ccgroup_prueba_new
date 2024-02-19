@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import MUIDataTable from 'mui-datatables';
-import { Button, IconButton, Modal, TextField } from '@mui/material';
+import { Button, IconButton, Modal, TextField, Checkbox } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -43,22 +43,27 @@ const ContentProduct = () => {
   const [rows, setRows] = useState([]);
   const [updateCount, setUpdateCount] = useState(0);
   const [openModal, setOpenModal] = useState(false);
-  const [newProduct, setNewProduct] = useState({ 
-                                                id:'' , 
-                                                name: '', 
-                                                sku:'' , 
-                                                purchase_price: '', 
-                                                selling_price:'' , 
-                                                entry_date: '', 
-                                                category_id:'' ,
-                                                subcategory_id:'' , 
-                                                unit: '', 
-                                                status: '',
-                                                initial_stock:'' , 
-                                                min_stock: '',
-                                            });
+  const [newProduct, setNewProduct] = useState({
+    id: '',
+    name: '',
+    sku: '',
+    purchase_price: '',
+    selling_price: '',
+    entry_date: '',
+    category_id: '',
+    subcategory_id: '',
+    unit: '',
+    status: '',
+    initial_stock: '',
+    min_stock: '',
+  });
   //Avisa si es edit al componente
   const [editingMode, setEditingMode] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedWorkerToDelete, setSelectedWorkerToDelete] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
 
   useEffect(() => {
 
@@ -68,7 +73,7 @@ const ContentProduct = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://api.cvimport.com/api/product');
+      const response = await fetch('http://localhost:3006/products');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -78,7 +83,7 @@ const ContentProduct = () => {
       setData(valor.data);
       updateTableRows(valor.data);
       setPdf(valor.data);
-       
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -86,79 +91,131 @@ const ContentProduct = () => {
 
   const fetchDataSelect = async () => {
     try {
-    const response_category = await fetch('https://api.cvimport.com/api/category');
-    if (!response_category.ok) {
-      throw new Error(`HTTP error! Status: ${response_category.status}`);
-    }
-    const valor_select = await response_category.json();
-    console.log(valor_select.data);
-    updateSelects(valor_select.data);
+      const response_category = await fetch('http://localhost:8090/https://api.cvimport.com/api/category');
+      if (!response_category.ok) {
+        throw new Error(`HTTP error! Status: ${response_category.status}`);
+      }
+      const valor_select = await response_category.json();
+      updateSelects(valor_select.data);
 
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleCheckboxChange = (event, id) => {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setSelectedIds((prevSelectedIds) => [...prevSelectedIds, id]);
+    } else {
+      setSelectedIds((prevSelectedIds) =>
+        prevSelectedIds.filter((selectedId) => selectedId !== id)
+      );
+    }
+  };
+  
+  const handleDeleteSelected = () => {
+    setConfirmDelete(true);
+  };
+  
+  const handleConfirmDelete = () => {
+    Swal.fire({
+      title: '¿Está seguro que desea eliminar los IDs seleccionados?',
+      text: `IDs: ${selectedIds.join(", ")}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        for (const id of selectedIds) {
+          handleDeleteWorker(id);
+        }
+      }
+    });
+  };
+  
+  const handleDeleteWorker = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        console.log("ID eliminado:", id);
+        getList(setLista);
+        setSelectedIds((prevSelectedIds) => prevSelectedIds.filter((selectedId) => selectedId !== id));
+      } else {
+        console.error("Error al eliminar el ID:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error al eliminar el ID:", error);
+    }
   };
 
   const fetchDataSelectSubCategory = async (id) => {
     try {
       console.log(id);
-    const response_category = await fetch('https://api.cvimport.com/api/subcategory');
-    if (!response_category.ok) {
-      throw new Error(`HTTP error! Status: ${response_category.status}`);
+      const response_category = await fetch('http://localhost:8090/https://api.cvimport.com/api/subcategory');
+      if (!response_category.ok) {
+        throw new Error(`HTTP error! Status: ${response_category.status}`);
+      }
+      const valor_select = await response_category.json();
+
+      const resultados = valor_select.data.filter(objeto => objeto.category_id === id);
+      setsubCategoryIdy(id);
+      const resultados_final = resultados.map((item) => ({
+        key: item.id,
+        value: item.name
+      }));
+
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        'category_id': id,
+      }));
+      setSelectSubCategory(resultados_final);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    const valor_select = await response_category.json();
-
-    const resultados =  valor_select.data.filter(objeto => objeto.category_id === id);
-    setsubCategoryIdy(id);
-    const resultados_final = resultados.map((item) => ({  
-      key: item.id,      
-      value: item.name 
-    }));     
-  
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      'category_id': id,
-    }));
-    setSelectSubCategory(resultados_final);
-
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
   };
 
 
   const fetchDataSelectSubCategoryEdit = async (id) => {
     try {
       console.log(id);
-    const response_category = await fetch('https://api.cvimport.com/api/subcategory');
-    if (!response_category.ok) {
-      throw new Error(`HTTP error! Status: ${response_category.status}`);
+      const response_category = await fetch('http://localhost:8090/https://api.cvimport.com/api/subcategory');
+      if (!response_category.ok) {
+        throw new Error(`HTTP error! Status: ${response_category.status}`);
+      }
+      const valor_select = await response_category.json();
+
+      const resultados = valor_select.data.filter(objeto => objeto.category_id === id);
+
+      const resultados_final = resultados.map((item) => ({
+        key: item.id,
+        value: item.name
+      }));
+
+      setSelectSubCategory(resultados_final);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    const valor_select = await response_category.json();
-
-    const resultados =  valor_select.data.filter(objeto => objeto.category_id === id);
- 
-    const resultados_final = resultados.map((item) => ({  
-      key: item.id,      
-      value: item.name 
-    }));     
-  
-    setSelectSubCategory(resultados_final);
-
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
   };
 
 
-  const updateSelects = (data) => {  
-  
-    const rows = data.map((item) => ({  
-      key: item.id,      
-      value: item.name 
-    }));     
-    console.log(rows); 
-    setSelect(rows);                
+  const updateSelects = (data) => {
+
+    const rows = data.map((item) => ({
+      key: item.id,
+      value: item.name
+    }));
+    setSelect(rows);
   };
 
   const updateTableRows = (data) => {
@@ -198,7 +255,7 @@ const ContentProduct = () => {
       fetchData();
       if (result.isConfirmed) {
         try {
-          await fetch(`https://api.cvimport.com/api/product/${id}`, {
+          await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/${id}`, {
             method: 'DELETE',
           });
 
@@ -225,105 +282,106 @@ const ContentProduct = () => {
   };
 
   const handleOpenModal = () => {
-      setOpenModal(true);
-    };
+    setOpenModal(true);
+  };
 
   const handleCloseModal = () => {
-      setOpenModal(false);
-    };
+    setOpenModal(false);
+  };
 
-  const ConnectEdit = async (newProduct ) => {
+  const ConnectEdit = async (newProduct) => {
     try {
-         console.log("holaXV:", newProduct.id , newProduct);
-         const response = await fetch(`https://api.cvimport.com/api/product/${newProduct.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              id: newProduct.id,
-              name: newProduct.name,
-              sku: newProduct.sku,
-              purchase_price: newProduct.purchase_price,
-              selling_price: newProduct.selling_price,
-              entry_date: newProduct.entry_date,
-              category_id: newProduct.category_id,
-              unit: newProduct.unit,
-              status: newProduct.status,
-              subcategory_id: newProduct.subcategory_id,
-              initial_stock: newProduct.initial_stock,
-              min_stock: newProduct.min_stock,
-              stock: newProduct.stock,  
-            }),
-        });
-        console.log()
-        handleCloseModal();
-        setUpdateCount((prevCount) => prevCount + 1);
-        fetchData(); // Actualiza los datos después de crear la categoría
+      console.log("holaXV:", newProduct.id, newProduct);
+      const response = await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/${newProduct.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: newProduct.id,
+          name: newProduct.name,
+          sku: newProduct.sku,
+          purchase_price: newProduct.purchase_price,
+          selling_price: newProduct.selling_price,
+          entry_date: newProduct.entry_date,
+          category_id: newProduct.category_id,
+          unit: newProduct.unit,
+          status: newProduct.status,
+          subcategory_id: newProduct.subcategory_id,
+          initial_stock: newProduct.initial_stock,
+          min_stock: newProduct.min_stock,
+          stock: newProduct.stock,
+        }),
+      });
+      console.log()
+      handleCloseModal();
+      setUpdateCount((prevCount) => prevCount + 1);
+      fetchData(); // Actualiza los datos después de crear la categoría
     } catch (error) {
-        // Si hay un error durante la solicitud
-        console.log(error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Un error ha ocurrido',
-            showConfirmButton: false,
-            timer: 1500
-        });
-    } 
+      // Si hay un error durante la solicitud
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Un error ha ocurrido',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
 
   };
 
-  const handleEdit = async ( id ) => {
-      const ProductToEdit = data.find((item) => item.id === id);
-      fetchDataSelectSubCategoryEdit(ProductToEdit.category_id);
-      console.log(ProductToEdit, select , selectSubCategory );
+  const handleEdit = async (id) => {
+    const ProductToEdit = data.find((item) => item.id === id);
+    fetchDataSelectSubCategoryEdit(ProductToEdit.category_id);
+    console.log(ProductToEdit, select, selectSubCategory);
 
-      if (ProductToEdit) {
-        setEditingMode(true);
-        setOpenModal(true);
-        setNewProduct({ id: ProductToEdit.id ,  
-           name: ProductToEdit.name, 
-           serie: ProductToEdit.serie ,
-           status: ProductToEdit.status         ,  
-           sku: ProductToEdit.sku ,   
-           category_id: ProductToEdit.category_id , 
-           subcategory_id: ProductToEdit.subcategory_id ,   
-           initial_stock: ProductToEdit.initial_stock ,
-           min_stock: ProductToEdit.min_stock ,
-           purchase_price: ProductToEdit.purchase_price  ,         
-           selling_price: ProductToEdit.selling_price ,
-          });
-        console.log(newProduct);
-        handleInputChange;
-      }
+    if (ProductToEdit) {
+      setEditingMode(true);
+      setOpenModal(true);
+      setNewProduct({
+        id: ProductToEdit.id,
+        name: ProductToEdit.name,
+        serie: ProductToEdit.serie,
+        status: ProductToEdit.status,
+        sku: ProductToEdit.sku,
+        category_id: ProductToEdit.category_id,
+        subcategory_id: ProductToEdit.subcategory_id,
+        initial_stock: ProductToEdit.initial_stock,
+        min_stock: ProductToEdit.min_stock,
+        purchase_price: ProductToEdit.purchase_price,
+        selling_price: ProductToEdit.selling_price,
+      });
+      console.log(newProduct);
+      handleInputChange;
+    }
   };
 
 
   const handleCreateProduct = async () => {
 
 
-    console.log("handleCreateProduct ; ", newProduct );
+    console.log("handleCreateProduct ; ", newProduct);
     try {
       setEditingMode(false);
-      const response = await fetch('https://api.cvimport.com/api/product', {
+      const response = await fetch('http://localhost:8090/https://api.cvimport.com/api/product', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(
-            {
-               
-                sku: newProduct.sku , 
-                name: newProduct.name, 
-                purchase_price: newProduct.purchase_price, 
-                selling_price: newProduct.selling_price , 
-                entry_date: date, 
-                category_id: subCategoryId , 
-                subcategory_id: newProduct.subcategory_id  , 
-                initial_stock:newProduct.initial_stock , 
-                min_stock: newProduct.min_stock,
-                stock: newProduct.stock, 
-            }
+          {
+
+            sku: newProduct.sku,
+            name: newProduct.name,
+            purchase_price: newProduct.purchase_price,
+            selling_price: newProduct.selling_price,
+            entry_date: date,
+            category_id: subCategoryId,
+            subcategory_id: newProduct.subcategory_id,
+            initial_stock: newProduct.initial_stock,
+            min_stock: newProduct.min_stock,
+            stock: newProduct.stock,
+          }
         ),
       });
 
@@ -370,93 +428,93 @@ const ContentProduct = () => {
 
   const secondSelect = (event) => {
     const id = event.target.value;
-     setSelectSubCategory(event.target.value);
+    setSelectSubCategory(event.target.value);
     fetchDataSelectSubCategory(id);
   };
 
-  
+
   const handleInputDate = (event) => {
     formatDate(event.$d);
-  
+
   };
 
   function formatDate(date) {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
 
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-        setDate([year, month, day].join('-'));
-        console.log( "Aquiiii date:" , date, [year, month, day].join('-'));
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+    setDate([year, month, day].join('-'));
+    console.log("Aquiiii date:", date, [year, month, day].join('-'));
 
-}
+  }
 
-const getSku = async (event)  => {
-  console.log("Aqui Edicion :",editingMode);
-  if( editingMode == 0){
-try {
-  console.log("holaXV:", subCategoryId);
+  const getSku = async (event) => {
+    console.log("Aqui Edicion :", editingMode);
+    if (editingMode == 0) {
+      try {
+        console.log("holaXV:", subCategoryId);
 
-  const response = await fetch(`https://api.cvimport.com/api/product/ObteinSku/${event.target.value}`);
-  const valor = await response.json();
-  setNewProduct((prevProduct) => ({
-    ...prevProduct,
-    'sku': valor.data,
-  }));
+        const response = await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/ObteinSku/${event.target.value}`);
+        const valor = await response.json();
+        setNewProduct((prevProduct) => ({
+          ...prevProduct,
+          'sku': valor.data,
+        }));
 
- console.log("holaXVVVVVV:", valor);
-} catch (error) {
- // Si hay un error durante la solicitud
- console.log(error);
+        console.log("holaXVVVVVV:", valor);
+      } catch (error) {
+        // Si hay un error durante la solicitud
+        console.log(error);
 
-} 
-}
-};
+      }
+    }
+  };
 
 
 
-const handleStatus = async (id)  => {
-  try {  
-    const response = await fetch(`https://api.cvimport.com/api/product/statusUpdate/${id}`);
-    const valor = await response.json();
+  const handleStatus = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/statusUpdate/${id}`);
+      const valor = await response.json();
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        'status': valor.data.status,
+      }));
+      fetchData();
+      console.log("holaXVVVVVV:", valor.data.status);
+    } catch (error) {
+      // Si hay un error durante la solicitud
+      console.log(error);
+
+    }
+
+  };
+  const getSubCatId = async (event) => {
     setNewProduct((prevProduct) => ({
       ...prevProduct,
-      'status': valor.data.status,
+      'subcategory_id': event.target.value,
     }));
-    fetchData();
-   console.log("holaXVVVVVV:", valor.data.status);
-  } catch (error) {
-   // Si hay un error durante la solicitud
-   console.log(error);
-  
-  } 
-  
+
+
   };
-const getSubCatId = async (event)  => {
-  setNewProduct((prevProduct) => ({
-    ...prevProduct,
-    'subcategory_id': event.target.value,
-  }));
 
-
-};
-
-const blobToFile = (blob, fileName) => {
-  const file = new File([blob], fileName, { type: blob.type });
-  return file;
-};
+  const blobToFile = (blob, fileName) => {
+    const file = new File([blob], fileName, { type: blob.type });
+    return file;
+  };
 
   const handleDownload = () => {
- 
+
     // Crear un libro de Excel
-    console.log("pdf :",pdf);
+    console.log("pdf :", pdf);
     const workbook = XLSX.utils.book_new();
     const sheetData = pdf.map(item => [
-     `${item.sku.substring(0,1)}00`,
+      `${item.sku.substring(0, 1)}00`,
       item.categoria,
       item.sku.substring(0, 3),
       item.subcategoria,
@@ -465,14 +523,14 @@ const blobToFile = (blob, fileName) => {
       item.name,
       item.unit,
       item.purchase_price,
-      "NEW PROD", 
+      "NEW PROD",
       item.updated_at,
       "ADMIN",
       item.status === 1 ? 'ACTIVO' : 'DESHABILITADO', // Modificado para mostrar "Activo" o "Inactivo"
-      "ACTUAL", 
-    ]);    
-    
-    const worksheet = XLSX.utils.aoa_to_sheet([['COD_CAT', 'CATEGORÍA', 'COD_SUB CAT', 'COD_SUB CAT', 'CÓDIGO', 'SKU  ', 'DESCRIPCIÓN', 'U.M.', 'COSTO', 'PROVEEDOR', 'ULT MODIFICACIÓN', 'USER' , 'ESTADO', 'PRICE STATUS' ], ...sheetData]);
+      "ACTUAL",
+    ]);
+
+    const worksheet = XLSX.utils.aoa_to_sheet([['COD_CAT', 'CATEGORÍA', 'COD_SUB CAT', 'COD_SUB CAT', 'CÓDIGO', 'SKU  ', 'DESCRIPCIÓN', 'U.M.', 'COSTO', 'PROVEEDOR', 'ULT MODIFICACIÓN', 'USER', 'ESTADO', 'PRICE STATUS'], ...sheetData]);
 
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
 
@@ -497,9 +555,22 @@ const blobToFile = (blob, fileName) => {
     document.body.removeChild(a);
   };
 
-const columns = [
+  const columns = [
     {
-      field : 'id',
+      field: "Check",
+      headerName: "Check",
+      width: 56,
+      renderCell: (params) => (
+        <div>
+          <Checkbox
+            style={{ color: "green" }}
+            onChange={(event) => handleCheckboxChange(event, params.row.id)}
+          />
+        </div>
+      ),
+    },
+    {
+      field: 'id',
       headerName: 'Id',
       options: {
         display: false,
@@ -530,32 +601,32 @@ const columns = [
         searchable: true,
       },
     },
-    
+
     {
       field: 'selling_price',
       headerName: 'Precio de Venta',
-     
+
     },
     {
       field: 'purchase_price',
       headerName: 'Precio de Compra',
-  
+
     },
     {
       field: 'unit',
       headerName: 'Unidad',
-  
+
     },
     {
       field: 'status',
       headerName: 'status',
-        options: {
-          searchable: true,
-        },
+      options: {
+        searchable: true,
+      },
       valueFormatter: (params) => (params.value === 1 ? 'ACTIVE' : 'INACTIVE'),
 
-    },   
-            
+    },
+
     {
       field: 'Actions',
       type: 'actions',
@@ -568,25 +639,34 @@ const columns = [
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
-            onClick={() => handleEdit(id  )  }
+            onClick={() => handleEdit(id)}
             color="success"
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={() => handleDelete(id )}
+            onClick={() => handleDelete(id)}
             color="warning"
           />,
           <GridActionsCellItem
-          icon={<OnlinePrediction />}
-          label="Status"
-          onClick={() => handleStatus(id )}
-          color="primary"
-        />,
-        ];  
+            icon={<OnlinePrediction />}
+            label="Status"
+            onClick={() => handleStatus(id)}
+            color="primary"
+          />,
+        ];
       },
     },
   ];
+
+  useEffect(() => {
+    // Aquí puedes realizar cualquier operación que necesites cuando selectedRows cambie
+    console.log('Filas seleccionadas:', selectedRows);
+  }, [selectedRows]);
+
+  const handleSelectionChange = (newSelection) => {
+    setSelectedRows(newSelection.selectionModel);
+  };
 
   return (
     <div className="content-wrapper">
@@ -626,12 +706,12 @@ const columns = [
                       startIcon={<FontAwesomeIcon icon={faPlusCircle} />}
                       onClick={() => {
                         handleDownload();
-                      }} 
+                      }}
                     >
                       Descargr Productos
                     </Button>
 
-                    
+
                     <Button
                       variant="contained"
                       color="primary"
@@ -640,171 +720,174 @@ const columns = [
                         setEditingMode(false);
                         setOpenModal(true);
                         handleCreateProduct;
-                        setNewProduct({ id:'' , name: '', sku: '' });
-                      }} 
+                        setNewProduct({ id: '', name: '', sku: '' });
+                      }}
                     >
                       Crear Producto
                     </Button>
-                    <Modal open={openModal} 
-                          onClose={handleCloseModal}
-                          >
-                    <div style={style.modalContainer}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '20px' }}
-                    >{editingMode ? 'Editar Producto' : 'Crear Nuevo Producto'}</h2>
-              
-                    <Grid container spacing={2} alignItems="center">
-                        <TextField
-                          label="id"
-                          variant="outlined"
-                          fullWidth
-                          margin="normal"
-                          name="id"
-                          value= {newProduct.id}
-                          style={{ display: 'none' }}
-                        />            
-                   <Grid item xs={12} md={6}>
-                        <InputLabel>SKU</InputLabel>
-                        <TextField
-                          fullWidth
-                          name="sku"
-                          value={newProduct.sku}
-                          variant="filled"
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                    <InputLabel>Fecha de Ingreso</InputLabel>
+                    <Button onClick={handleDeleteSelected} variant="contained" color="secondary">
+                      Eliminar seleccionados
+                    </Button>
+                    <Modal open={openModal}
+                      onClose={handleCloseModal}
+                    >
+                      <div style={style.modalContainer}>
+                        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}
+                        >{editingMode ? 'Editar Producto' : 'Crear Nuevo Producto'}</h2>
 
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            defaultValue={dayjs(new Date())}
-                            onChange={  handleInputDate }
-                            format="DD/MM/YYYY" />
-                      </LocalizationProvider>
-                      </Grid>
-                    </Grid>
-              
-                    <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12} md={6}>
-                          <InputLabel id="demo-simple-select-standard-label">Categoria</InputLabel>
-                          <Select 
+                        <Grid container spacing={2} alignItems="center">
+                          <TextField
+                            label="id"
+                            variant="outlined"
+                            fullWidth
+                            margin="normal"
+                            name="id"
+                            value={newProduct.id}
+                            style={{ display: 'none' }}
+                          />
+                          <Grid item xs={12} md={6}>
+                            <InputLabel>SKU</InputLabel>
+                            <TextField
+                              fullWidth
+                              name="sku"
+                              value={newProduct.sku}
+                              variant="filled"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <InputLabel>Fecha de Ingreso</InputLabel>
+
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                defaultValue={dayjs(new Date())}
+                                onChange={handleInputDate}
+                                format="DD/MM/YYYY" />
+                            </LocalizationProvider>
+                          </Grid>
+                        </Grid>
+
+                        <Grid container spacing={2} alignItems="center">
+                          <Grid item xs={12} md={6}>
+                            <InputLabel id="demo-simple-select-standard-label">Categoria</InputLabel>
+                            <Select
                               label="Categoria"
                               labelId="demo-simple-select-standard-label"
                               fullWidth
-                              value = {newProduct.category_id}
-                              onChange={  secondSelect }
-                              sx={{ color: 'black' }} 
-                          >
+                              value={newProduct.category_id}
+                              onChange={secondSelect}
+                              sx={{ color: 'black' }}
+                            >
 
-                          {Array.isArray(select) && select.length > 0 ? (
-                              select.map((item) => (
-                                <MenuItem  value={item.key}>
-                                  {item.value}
+                              {Array.isArray(select) && select.length > 0 ? (
+                                select.map((item, index) => (
+                                  <MenuItem key={index} value={item.key}>
+                                    {item.value}
+                                  </MenuItem>
+                                ))
+                              ) : (
+                                <MenuItem value="" disabled>
+                                  No hay categorías disponibles
                                 </MenuItem>
-                              ))
-                            ) : (
-                              <MenuItem value="" disabled>
-                                No hay categorías disponibles
-                              </MenuItem>
-                            )}
+                              )}
 
 
-                          </Select>
-                    </Grid>
-                    
+                            </Select>
+                          </Grid>
 
-                    <Grid item xs={12} md={6}>
-                          <InputLabel id="demo-simple-select-standard-label">Sub Categoria</InputLabel>
-                          <Select 
+
+                          <Grid item xs={12} md={6}>
+                            <InputLabel id="demo-simple-select-standard-label">Sub Categoria</InputLabel>
+                            <Select
                               label="SubCategoria"
                               labelId="demo-simple-select-standard-label"
                               fullWidth
-                              value = {newProduct.subcategory_id}
+                              value={newProduct.subcategory_id}
                               onChange={(event) => {
                                 // Primero, llama a la función para obtener el ID de la subcategoría
                                 getSubCatId(event);
                                 // Luego, llama a la función para obtener el SKU
                                 getSku(event);
                               }}
-                              sx={{ color: 'black' }} 
-                          >
-                            {Array.isArray(selectSubCategory) && select.length > 0 ? (
-                              selectSubCategory.map((item) => (
-                                <MenuItem  value={item.key}>
-                                  {item.value}
+                              sx={{ color: 'black' }}
+                            >
+                              {Array.isArray(selectSubCategory) && select.length > 0 ? (
+                                selectSubCategory.map((item) => (
+                                  <MenuItem value={item.key}>
+                                    {item.value}
+                                  </MenuItem>
+                                ))
+                              ) : (
+                                <MenuItem value="" disabled>
+                                  No hay sub categorías disponibles
                                 </MenuItem>
-                              ))
-                            ) : (
-                              <MenuItem value="" disabled>
-                                No hay sub categorías disponibles
-                              </MenuItem>
-                            )}
-                          </Select>
-                    </Grid>
-                    </Grid>
+                              )}
+                            </Select>
+                          </Grid>
+                        </Grid>
 
-                    <Grid container spacing={1} alignItems="center">
-                    <Grid item xs={12} md={12}>
+                        <Grid container spacing={1} alignItems="center">
+                          <Grid item xs={12} md={12}>
 
-                        <TextField
-                          label="Nombre"
-                          variant="outlined"
-                          fullWidth
-                          margin="normal"
-                          name="name"
-                          value={newProduct.name}
-                          onChange={ handleInputChange }
-                        />
-                    </Grid>
-                    </Grid>
+                            <TextField
+                              label="Nombre"
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                              name="name"
+                              value={newProduct.name}
+                              onChange={handleInputChange}
+                            />
+                          </Grid>
+                        </Grid>
 
-                    <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12} md={6}>
-                        <TextField
-                          label="Precio de Compra"
-                          variant="outlined"
-                          fullWidth
-                          margin="normal"
-                          name="purchase_price"
-                          value={newProduct.purchase_price}
-                          onChange={  handleInputChange }
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <TextField
-                          label="Precio de Venta"
-                          variant="outlined"
-                          fullWidth
-                          margin="normal"
-                          name="selling_price"
-                          value={newProduct.selling_price}
-                          onChange={  handleInputChange }
-                        />
-                    </Grid>
-                    </Grid>
-                     
+                        <Grid container spacing={2} alignItems="center">
+                          <Grid item xs={12} md={6}>
+                            <TextField
+                              label="Precio de Compra"
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                              name="purchase_price"
+                              value={newProduct.purchase_price}
+                              onChange={handleInputChange}
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <TextField
+                              label="Precio de Venta"
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                              name="selling_price"
+                              value={newProduct.selling_price}
+                              onChange={handleInputChange}
+                            />
+                          </Grid>
+                        </Grid>
+
 
 
                         <div style={style.buttonContainer}>
 
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          style={style.createButton}
-                          onClick={() => editingMode ? ConnectEdit(newProduct) : handleCreateProduct()}
-                          > 
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            style={style.createButton}
+                            onClick={() => editingMode ? ConnectEdit(newProduct) : handleCreateProduct()}
+                          >
                             {editingMode ? 'Editar' : 'Crear'}
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          style={style.cancelButton}
-                          onClick={() => {
-                            setOpenModal(false);
-                            setEditingMode(false);
-                            setNewProduct({ id:'' , name: '', serie: '' });
-                          }}                      >
-                          Cancelar
-                        </Button>
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            style={style.cancelButton}
+                            onClick={() => {
+                              setOpenModal(false);
+                              setEditingMode(false);
+                              setNewProduct({ id: '', name: '', serie: '' });
+                            }}                      >
+                            Cancelar
+                          </Button>
                         </div>
                       </div>
                     </Modal>
@@ -812,9 +895,9 @@ const columns = [
                 </div>
                 <div className="card-body">
                   <div className="row">
-             
+
                     <div className="col-lg-12">
-                    <DataGrid
+                      <DataGrid
                         rows={rows}
                         columns={columns}
                         initialState={{
@@ -823,8 +906,8 @@ const columns = [
                           },
                         }}
                         pageSizeOptions={[5, 10]}
-                        
                       />
+                      {confirmDelete && handleConfirmDelete()}
                     </div>
                   </div>
                 </div>
@@ -837,7 +920,7 @@ const columns = [
   );
 };
 
-const style  = {
+const style = {
   modalContainer: {
     position: 'absolute',
     top: '50%',
@@ -856,8 +939,8 @@ const style  = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-     marginBottom: '5px', 
-     padding: '5px',
+    marginBottom: '5px',
+    padding: '5px',
   },
 
   buttonContainer: {

@@ -14,7 +14,7 @@ const Login = () => {
     try {
    
 
-  const loginResponse = await fetch('https://api.cvimport.com/api/auth/login', {
+  const loginResponse = await fetch('http://localhost:8080/https://api.cvimport.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
