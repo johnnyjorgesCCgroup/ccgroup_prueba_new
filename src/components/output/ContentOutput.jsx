@@ -437,18 +437,20 @@
       
       return (
         <Container >
-          <Grid container marginLeft={10}  spacing={2} alignItems="center">
+
+      
+
+            <Grid container marginLeft={10}  spacing={2} alignItems="center">
                 <Grid item xs={12} md={12}>
                     <br />
                 <Typography variant="h5" gutterBottom>
-                  Registro de Salidas de Mercaderia
+                  Registro de Incidencias
                 </Typography>
                 </Grid>
-    
                 <Grid item xs={12} md={3}>
                     <TextField
                         fullWidth
-                        label="Folio/Documento"
+                        label="Numero de Orden"
                         type="textnp"
                         name="oc"
                         value={newProducto.oc || [] }
@@ -485,7 +487,7 @@
               //      options={providerList || []}
                     options={marketPlaceList || []}
                     sx={{ width:180 }}
-                    renderInput={(params) => <TextField {...params} label="Market Place" />}
+                    renderInput={(params) => <TextField {...params} label="Fecha" />}
                     onChange={ handleInputChangeOutput }
                     />
     
@@ -501,15 +503,25 @@
                     id="combo-box-demo"
                     options={almacenList || []}
                     sx={{ width:180 }}
-                    renderInput={(params) => <TextField {...params} label="Almacen" />}
+                    renderInput={(params) => <TextField {...params} label="Plataforma" />}
                     onChange={ handleInputChangeAlmacen }
                     />
                 </Grid>
 
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={2}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                    label="Fecha de Compra"
+                    label="Fecha de Contacto"
+                    defaultValue={dayjs(new Date())}
+                    onChange={  handleInputDate }
+                    format="DD/MM/YYYY" />
+                </LocalizationProvider>
+                </Grid>
+
+                <Grid item xs={12} md={2}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                    label="Fecha de Solución"
                     defaultValue={dayjs(new Date())}
                     onChange={  handleInputDate }
                     format="DD/MM/YYYY" />
@@ -517,6 +529,86 @@
                 </Grid>
     
     
+                <Grid item xs={12} md={2}>
+                <TextField
+                        fullWidth
+                        label="Estado"
+                        type="textnp"
+                        name="oc"
+                        value={newProducto.oc || [] }
+                        // value={newPurchaseLine.oc || [] }
+                        onChange={ handleInputChangeWarehouse }
+                        margin="normal"
+                        />
+                </Grid>
+
+                <Grid item xs={12} md={2}>
+                <TextField
+                        fullWidth
+                        label="Submotivo"
+                        type="textnp"
+                        name="oc"
+                        value={newProducto.oc || [] }
+                        // value={newPurchaseLine.oc || [] }
+                        onChange={ handleInputChangeWarehouse }
+                        margin="normal"
+                        />
+                </Grid>
+
+                <Grid item xs={12} md={2}>
+                <TextField
+                        fullWidth
+                        label="Area"
+                        type="textnp"
+                        name="oc"
+                        value={newProducto.oc || [] }
+                        // value={newPurchaseLine.oc || [] }
+                        onChange={ handleInputChangeWarehouse }
+                        margin="normal"
+                        />
+                </Grid>
+
+
+                <Grid item xs={12} md={2}>
+                <TextField
+                        fullWidth
+                        label="¿Ruta?"
+                        type="textnp"
+                        name="oc"
+                        value={newProducto.oc || [] }
+                        // value={newPurchaseLine.oc || [] }
+                        onChange={ handleInputChangeWarehouse }
+                        margin="normal"
+                        />
+                </Grid>
+
+                <Grid item xs={12} md={2}>
+                <TextField
+                        fullWidth
+                        label="Motivo"
+                        type="textnp"
+                        name="oc"
+                        value={newProducto.oc || [] }
+                        // value={newPurchaseLine.oc || [] }
+                        onChange={ handleInputChangeWarehouse }
+                        margin="normal"
+                        />
+                </Grid>
+
+                <Grid item xs={12} md={2}>
+                <TextField
+                        fullWidth
+                        label="Logistica"
+                        type="textnp"
+                        name="oc"
+                        value={newProducto.oc || [] }
+                        // value={newPurchaseLine.oc || [] }
+                        onChange={ handleInputChangeWarehouse }
+                        margin="normal"
+                        />
+                </Grid>
+
+
           
                 <Grid item xs={12} md={12}>
                 <br /> 
@@ -603,7 +695,7 @@
                 </Button>
                 </div>           
             </Grid>
-      
+            
         </Container>
       );
     };

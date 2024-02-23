@@ -91,7 +91,7 @@ const ContentProduct = () => {
 
   const fetchDataSelect = async () => {
     try {
-      const response_category = await fetch('http://localhost:8090/https://api.cvimport.com/api/category');
+      const response_category = await fetch('https://api.cvimport.com/api/category');
       if (!response_category.ok) {
         throw new Error(`HTTP error! Status: ${response_category.status}`);
       }
@@ -139,7 +139,7 @@ const ContentProduct = () => {
   
   const handleDeleteWorker = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/${id}`, {
+      const response = await fetch(`https://api.cvimport.com/api/product/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -160,7 +160,7 @@ const ContentProduct = () => {
   const fetchDataSelectSubCategory = async (id) => {
     try {
       console.log(id);
-      const response_category = await fetch('http://localhost:8090/https://api.cvimport.com/api/subcategory');
+      const response_category = await fetch('https://api.cvimport.com/api/subcategory');
       if (!response_category.ok) {
         throw new Error(`HTTP error! Status: ${response_category.status}`);
       }
@@ -188,7 +188,7 @@ const ContentProduct = () => {
   const fetchDataSelectSubCategoryEdit = async (id) => {
     try {
       console.log(id);
-      const response_category = await fetch('http://localhost:8090/https://api.cvimport.com/api/subcategory');
+      const response_category = await fetch('https://api.cvimport.com/api/subcategory');
       if (!response_category.ok) {
         throw new Error(`HTTP error! Status: ${response_category.status}`);
       }
@@ -255,7 +255,7 @@ const ContentProduct = () => {
       fetchData();
       if (result.isConfirmed) {
         try {
-          await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/${id}`, {
+          await fetch(`https://api.cvimport.com/api/product/${id}`, {
             method: 'DELETE',
           });
 
@@ -292,7 +292,7 @@ const ContentProduct = () => {
   const ConnectEdit = async (newProduct) => {
     try {
       console.log("holaXV:", newProduct.id, newProduct);
-      const response = await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/${newProduct.id}`, {
+      const response = await fetch(`https://api.cvimport.com/api/product/${newProduct.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -363,7 +363,7 @@ const ContentProduct = () => {
     console.log("handleCreateProduct ; ", newProduct);
     try {
       setEditingMode(false);
-      const response = await fetch('http://localhost:8090/https://api.cvimport.com/api/product', {
+      const response = await fetch('https://api.cvimport.com/api/product', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -459,7 +459,7 @@ const ContentProduct = () => {
       try {
         console.log("holaXV:", subCategoryId);
 
-        const response = await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/ObteinSku/${event.target.value}`);
+        const response = await fetch(`https://api.cvimport.com/api/product/ObteinSku/${event.target.value}`);
         const valor = await response.json();
         setNewProduct((prevProduct) => ({
           ...prevProduct,
@@ -479,7 +479,7 @@ const ContentProduct = () => {
 
   const handleStatus = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8090/https://api.cvimport.com/api/product/statusUpdate/${id}`);
+      const response = await fetch(`https://api.cvimport.com/api/product/statusUpdate/${id}`);
       const valor = await response.json();
       setNewProduct((prevProduct) => ({
         ...prevProduct,

@@ -19,9 +19,21 @@ const options = {
   },
 };
 
+export const SkuCard = ({ sku }) => {
+  return (
+    <div className="card">
+      <div className="card-body">
+        <h5 className="card-title">SKU</h5>
+        <p className="card-text">{sku}</p>
+      </div>
+    </div>
+  );
+};
+
+
 export const getList = async (setLista, setTotalProductos, setTotalStock, setTotalPurchasePrice, setTotalSellingPrice, setTop3PurchasePrice) => {
   try {
-    const response = await fetch("http://localhost:3006/products");
+    const response = await fetch("https://api.cvimport.com/api/product");
 
     if (response.ok) {
       const data = await response.json();
@@ -71,6 +83,8 @@ export default function dashboardProducts() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
+  const [selectedProductName, setSelectedProductName] = useState(null);
+
 
 
   useEffect(() => { }, [lista]);
@@ -243,7 +257,6 @@ export default function dashboardProducts() {
   // Limita el resultado a dos decimales
   const totalFilteredSellingPriceFormatted = totalFilteredSellingPrice.toFixed(2);
 
-
   return (
     <div className="content-wrapper">
       <div className="card" style={{ padding: 20 }}>
@@ -370,7 +383,9 @@ export default function dashboardProducts() {
               </div>
             </div>
           </div>
-          <div className="card-footer clearfix"></div>
+          <div className="card-footer clearfix">
+            {selectedProductDetails && selectedProductDetails.sku && <SkuCard sku={selectedProductDetails.sku} />}
+          </div>
         </div>
       </div>
     </div>
